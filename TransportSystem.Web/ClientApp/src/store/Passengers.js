@@ -8,6 +8,7 @@ const initialState = { initState: true, columns: 0, rows: 0, algorithm: null, pa
 
 
 function fetchDataFromApi() {
+    console.log(initialState);
     return createRandomPassengers()
 }
 
@@ -45,14 +46,26 @@ export const reducer = (state, action) => {
     }
 
     if (action.type === setMainProperties) {
-        return { ...state, initState: false, columns: action.payload.columns, rows: action.payload.rows, algorithm: action.payload.select };
+        console.log('====================');
+        console.log(action.payload);
+        var myState = { ...state, 
+            initState: false, 
+            columns: action.payload.columns, 
+            rows: action.payload.rows, 
+            algorithm: action.payload.algorithmType 
+        };
+        
+        console.log(myState);
+        return myState;
     }
     
     if (action.type === setInteractiveMode) {
+        console.log(state);
         return { ...state, passengers: action.payload.passengers, interactiveMode: true}
     }
     
     if (action.type === getNextStep) {
+        console.log(state);
         return { ...state, passengers: fetchDataFromApi()}
     }
     

@@ -1,0 +1,25 @@
+.passengersRow {
+    display: flex;
+    justify-content: center;
+}
+
+.cell {
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(161, 128, 128, .3), -13px 0 10px -13px rgba(0, 0, 0, 0), 13px 0 10px -13px rgba(0, 0, 0, 0), 0 0 40px rgba(0, 0, 0, .1) inset;
+}
+
+.automobile {
+    width: 140px;
+    height: 110px;
+}
+
+input[type="number"] {
+    width: 55px;
+}
+
+.center {
+    text-align: center;
+}

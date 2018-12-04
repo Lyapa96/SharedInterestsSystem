@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import './PassengersShow.css';
 
 class PassengersShow extends React.Component {
     constructor(props){
@@ -8,13 +9,13 @@ class PassengersShow extends React.Component {
     
     render() {
         let passengers = this.props.passengers;
-        let array = [];
+        let allPassengersCells = [];
         
         for (let i = 0; i < this.props.height; i++) {
+            let rows = [];
             for (let j = 0; j < this.props.width; j++) {
                 let passenger = passengers[i][j];
-                array.push((<div>
-
+                rows.push((
                     <div className="cell">
                         <h4>
                             Passenger {passenger.number}
@@ -25,15 +26,14 @@ class PassengersShow extends React.Component {
                             Quality of services: <strong>{passenger.quality}</strong>
                         </p>
                         {(passenger.transportType === "car")
-                            ? <img className="automobile" src="../../public/favicon.ico" alt="car"/>
-                            : <img className="automobile" src="favicon.ico" alt="bus"/>}
-                    </div>
-                </div>));
+                            ? <img className="automobile" src="car.jpg" alt="car"/>
+                            : <img className="automobile" src="bus.png" alt="bus"/>}
+                    </div>));
             }
-
+            allPassengersCells.push(<div className="passengersRow">{rows}</div>);
         }
 
-        return (<div>{array}</div>);
+        return (<div>{allPassengersCells}</div>);
     }
 }
 
