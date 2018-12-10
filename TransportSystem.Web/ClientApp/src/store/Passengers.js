@@ -7,8 +7,22 @@ const initialState = { initState: true, columns: 0, rows: 0, algorithm: null, pa
 
 
 
-function fetchDataFromApi() {
-    console.log(initialState);
+function fetchDataFromApi(state) {
+    console.log(state.algorithm.type);
+    console.log(state.passengers);
+    console.log(JSON.stringify({algorithmType: state.algorithm.type, passengers: state.passengers}));
+    const url = 'https://localhost:5003/api/passengers';
+    fetch(url,
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({algorithmType: state.algorithm.type, passengers: state.passengers})
+        })
+        .then(function(res){ console.log('невероятно');console.log(res) });
+    
     return createRandomPassengers()
 }
 
@@ -35,7 +49,23 @@ export const actionCreators = {
     setInitState: () => ({ type: setInitStateType }),
     setMainProperties: (data) => {return ({ type: setMainProperties, payload: data })},
     setInteractiveMode: (data) => {return ({ type: setInteractiveMode, payload: data})},
-    getNextStep: () => ({type: getNextStep})
+    getNextStep: () => async (dispatch, getState) => {
+        let state = getState().passengers;
+        console.log(state);
+        const url = 'https://localhost:5003/api/passengers';
+        const response = await fetch(url,{
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({algorithmType: state.algorithm.type, passengers: state.passengers})
+        });
+        const newPassengers = await response.json();
+        console.log('aaaaaaaaaaaaaaaaaa');
+        console.log(newPassengers);
+        dispatch({type: getNextStep, payload: newPassengers});
+    }
 };
 
 export const reducer = (state, action) => {
@@ -65,8 +95,9 @@ export const reducer = (state, action) => {
     }
     
     if (action.type === getNextStep) {
-        console.log(state);
-        return { ...state, passengers: fetchDataFromApi()}
+        console.log('newnewnenwnenwnenenwnwnewnewnewnewn');
+        console.log(action.payload);
+        return { ...state, passengers: action.payload.passengers}
     }
     
 

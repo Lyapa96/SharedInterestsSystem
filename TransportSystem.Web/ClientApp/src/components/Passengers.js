@@ -65,7 +65,10 @@ class Passengers extends React.Component {
                         </select>
                     </p>
                     <input className="btn btn-success" type="button" onClick={() => {
-                        this.savePassengers(createRandomPassengers(this.state.rows, this.state.columns, transportTypes));
+                        let passengers = createRandomPassengers(this.state.rows, this.state.columns, transportTypes);
+                        console.log('=11111111111111111111');
+                        console.log(passengers);
+                        this.savePassengers(passengers);
                         this.props.setMainProperties(this.state);
                     }} value="Create"/>
                 </form>
@@ -95,7 +98,9 @@ class Passengers extends React.Component {
                         <p>
                             Satisfaction: <input type="number" name="newPassengers[@i][@j].Satisfaction"
                                                  onChange={({target}) => {
-                                                     this.state.passengers[index.i][index.j].satisfaction = target.value;
+                                                     console.log(Number.parseFloat(target.value));
+                                                     console.log(target.value);
+                                                     this.state.passengers[index.i][index.j].satisfaction = Number.parseFloat(target.value);
                                                      this.setState(passengers)
                                                  }
                                                  }
@@ -105,7 +110,7 @@ class Passengers extends React.Component {
                         <p>
                             Quality of services: <input type="number" name="newPassengers[@i][@j].QualityCoefficient"
                                                         onChange={({target}) => {
-                                                            this.state.passengers[index.i][index.j].quality = target.value;
+                                                            this.state.passengers[index.i][index.j].quality = Number.parseFloat(target.value);
                                                             this.setState(passengers)
                                                         }
                                                         }
