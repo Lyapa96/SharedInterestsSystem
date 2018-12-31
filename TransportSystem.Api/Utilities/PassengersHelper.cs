@@ -33,6 +33,20 @@ namespace TransportSystem.Api.Utilities
             }
         }
 
+        public static void SetDefaultNeighbors(Passenger[][] passengers)
+        {
+            var rowCount = passengers.Length;
+            var columnCount = passengers.First().Length;
+            for (var i = 0; i < rowCount; i++)
+            for (var j = 0; j < columnCount; j++)
+            {
+                if (i > 0) passengers[i][j].AddNeighbor(passengers[i - 1][j]);
+                if (j > 0) passengers[i][j].AddNeighbor(passengers[i][j - 1]);
+                if (i < rowCount - 1) passengers[i][j].AddNeighbor(passengers[i + 1][j]);
+                if (j < columnCount - 1) passengers[i][j].AddNeighbor(passengers[i][j + 1]);
+            }
+        }
+
         public static void ClearNeighborsPassengers(Passenger[][] passengers)
         {
             var rowCount = passengers.Length;
@@ -51,10 +65,7 @@ namespace TransportSystem.Api.Utilities
         public static TransportType GetOtherRandomTransportType(TransportType transportType)
         {
             var randomTransportType = GetRandomtransportType();
-            while (transportType == randomTransportType)
-            {
-                randomTransportType = GetRandomtransportType();
-            }
+            while (transportType == randomTransportType) randomTransportType = GetRandomtransportType();
 
             return randomTransportType;
         }
