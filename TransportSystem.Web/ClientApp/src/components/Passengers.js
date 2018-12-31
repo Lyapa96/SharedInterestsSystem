@@ -39,7 +39,7 @@ class Passengers extends React.Component {
         }
     }
 
-    getFirstForm() {
+    getInitForm() {
         return (
             <div>
                 <form onSubmit="return false">
@@ -76,9 +76,7 @@ class Passengers extends React.Component {
         );
     }
 
-    savePassengers(passengers) {
-        this.setState({passengers});
-    }
+    savePassengers = passengers => this.setState({passengers});
 
     getSecondForm() {
         let passengers = this.state.passengers;
@@ -142,31 +140,27 @@ class Passengers extends React.Component {
     }
 
     render() {
-
-        let initForm = (
+        let mainPart = (
             <div>
                 <h1>Initial parameters</h1>
-                <button onClick={this.props.setInitState}>Заново</button>
-                {this.getFirstForm()}
+                <button className="btn btn-success" onClick={this.props.setInitState}>Reset</button>
             </div>);
+        let initForm = (this.props.initState) ? this.getInitForm() : <div/>;
+        let passengersParametersForm = (!this.props.initState && !this.props.interactiveMode) 
+            ? this.getSecondForm() : <div/>;
+        let passengersShowInfo = (this.props.interactiveMode) ? (<div>
+            {<PassengersShow passengers={this.props.passengers}
+                             height={this.props.rows}
+                             width={this.props.columns}/>}
+            <button className="btn btn-success" onClick={this.props.getNextStep}>Next</button>
+        </div>) : <div/>;
 
-        if (this.props.interactiveMode) {
-            return (<div>
-                {initForm}
-                {<PassengersShow passengers={this.props.passengers} 
-                                 height={this.props.rows}
-                                 width={this.props.columns}/>}
-                <button className="btn btn-success" onClick={this.props.getNextStep}>Next</button>
-            </div>)
-        }
-
-        if (!this.props.initState) {
-            return (<div>{initForm}{this.getSecondForm()}</div>)
-        }
-
-
-        console.log(this.props);
-        return initForm;
+        return (<div>
+            {mainPart}
+            {initForm}
+            {passengersParametersForm}
+            {passengersShowInfo}
+        </div>);
     }
 }
 

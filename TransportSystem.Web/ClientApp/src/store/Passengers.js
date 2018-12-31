@@ -72,13 +72,13 @@ export const reducer = (state, action) => {
     state = state || initialState;
     console.log(action);
     if (action.type === setInitStateType) {
-        return { ...state, initState: true };
+        return initialState;
     }
 
     if (action.type === setMainProperties) {
         console.log('====================');
         console.log(action.payload);
-        var myState = { ...state, 
+        let myState = { ...state, 
             initState: false, 
             columns: action.payload.columns, 
             rows: action.payload.rows, 

@@ -11,7 +11,8 @@ export function createRandomPassengers(rows, columns, transportTypes) {
                 satisfaction: Number.parseFloat(Math.random().toFixed(2)),
                 quality: Number.parseFloat(Math.random().toFixed(2)),
                 transportType: transportTypes[randomInteger(0, 1)],
-                coordinates: {i,j}
+                coordinates: {i,j},
+                allQualityCoefficients: []
             });
         }
         passengers.push(currentRow)
