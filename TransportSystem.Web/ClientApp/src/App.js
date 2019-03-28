@@ -6,6 +6,7 @@ import Counter from './components/Counter';
 import FetchData from './components/FetchData';
 import Info from './components/Info';
 import Passengers from './components/Passengers';
+import Smo from './components/Smo'
 
 export default () => (
   <Layout>
@@ -14,5 +15,6 @@ export default () => (
     <Route path='/fetchdata/:startDateIndex?' component={FetchData} />
     <Route path='/info' component={Info} />
     <Route path='/passengers' component={Passengers} />
+    <Route path='/smo' component={Smo} />
   </Layout>
 );

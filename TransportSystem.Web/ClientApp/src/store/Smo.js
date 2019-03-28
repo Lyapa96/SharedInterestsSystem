@@ -1,4 +1,4 @@
-﻿const setInitStateType = 'SET_INIT_STATE';
+const setInitStateType = 'SET_INIT_STATE';
 const setMainProperties = 'SET_MAIN_PROPERTIES';
 const setInteractiveMode = 'SET_INTERACTIVE_MODE';
 const getNextStep = 'NEXT_STEP';
@@ -51,7 +51,7 @@ export const reducer = (state, action) => {
         console.log(state);
         return { ...state, passengers: action.payload.passengers, interactiveMode: true}
     }
-    
+
     if (action.type === getNextStep) {
         return { ...state, passengers: action.payload.passengers}
     }

@@ -9,8 +9,7 @@ namespace TransportSystem.Web.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private static string[] Summaries = new[]
-        {
+        private static string[] Summaries = {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 

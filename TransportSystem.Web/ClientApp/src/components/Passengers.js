@@ -25,7 +25,7 @@ const types = [
         type: "QLearning"
     }];
 
-const transportTypes = ["car", "bus"];
+const transportTypes = ["Car", "Bus"];
 
 class Passengers extends React.Component {
     constructor(props) {
@@ -42,6 +42,7 @@ class Passengers extends React.Component {
     getInitForm() {
         return (
             <div>
+                <h3>Init parameters</h3>
                 <form onSubmit="return false">
                     <p>
                         Number of columns: <input type="number" name="columnCount" onChange={({target}) => {
@@ -56,7 +57,10 @@ class Passengers extends React.Component {
                     <p>
                         Transfer function:
                         <select onChange={({target}) => {
-                            this.setState({select: target.value, algorithmType: types.find(x => x.name === target.value).type})
+                            this.setState({
+                                select: target.value,
+                                algorithmType: types.find(x => x.name === target.value).type
+                            })
                         }} value={this.state.select} name="func">
                             <option disabled>Select transfer function</option>
                             {selectItems.map(title => {
@@ -66,8 +70,6 @@ class Passengers extends React.Component {
                     </p>
                     <input className="btn btn-success" type="button" onClick={() => {
                         let passengers = createRandomPassengers(this.state.rows, this.state.columns, transportTypes);
-                        console.log('=11111111111111111111');
-                        console.log(passengers);
                         this.savePassengers(passengers);
                         this.props.setMainProperties(this.state);
                     }} value="Create"/>
@@ -78,10 +80,9 @@ class Passengers extends React.Component {
 
     savePassengers = passengers => this.setState({passengers});
 
-    getSecondForm() {
+    getPassengersParametersForm() {
         let passengers = this.state.passengers;
 
-        console.log(this.state.passengers);
         let allPassengersCells = [];
         for (let i = 0; i < this.state.rows; i++) {
             let rows = [];
@@ -142,18 +143,23 @@ class Passengers extends React.Component {
     render() {
         let mainPart = (
             <div>
-                <h1>Initial parameters</h1>
+                <h1>Passengers</h1>
                 <button className="btn btn-success" onClick={this.props.setInitState}>Reset</button>
             </div>);
-        let initForm = (this.props.initState) ? this.getInitForm() : <div/>;
-        let passengersParametersForm = (!this.props.initState && !this.props.interactiveMode) 
-            ? this.getSecondForm() : <div/>;
-        let passengersShowInfo = (this.props.interactiveMode) ? (<div>
-            {<PassengersShow passengers={this.props.passengers}
-                             height={this.props.rows}
-                             width={this.props.columns}/>}
-            <button className="btn btn-success" onClick={this.props.getNextStep}>Next</button>
-        </div>) : <div/>;
+        let initForm = (this.props.initState)
+            ? this.getInitForm()
+            : <div/>;
+        let passengersParametersForm = (!this.props.initState && !this.props.interactiveMode)
+            ? this.getPassengersParametersForm()
+            : <div/>;
+        let passengersShowInfo = (this.props.interactiveMode) ?
+            (<div>
+                {<PassengersShow passengers={this.props.passengers}
+                                 height={this.props.rows}
+                                 width={this.props.columns}/>}
+                <button className="btn btn-success" onClick={this.props.getNextStep}>Next</button>
+            </div>)
+            : <div/>;
 
         return (<div>
             {mainPart}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TransportSystem.Api.Controllers;
 using TransportSystem.Api.Models.TransportChooseAlgorithm;
 using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning;
@@ -7,7 +8,7 @@ namespace TransportSystem.Api.Models
 {
     public class Passenger
     {
-        private PassengerInfo passengerInfo;
+        private readonly PassengerInfo passengerInfo;
 
         public Passenger(
             IPassengerBehaviour passengerBehaviour,
@@ -24,7 +25,7 @@ namespace TransportSystem.Api.Models
             Neighbors = new HashSet<Passenger>();
             AllQualityCoefficients = passengerInfo.AllQualityCoefficients;
         }
-        
+
         public Passenger(
             IPassengerBehaviour passengerBehaviour,
             TransportType transportType,
@@ -47,7 +48,7 @@ namespace TransportSystem.Api.Models
             Neighbors = new HashSet<Passenger>();
             AllQualityCoefficients = new List<double>();
         }
-            
+
         public IPassengerBehaviour PassengerBehaviour { get; set; }
 
         public double PersonalSatisfaction => 0.1;
@@ -76,9 +77,11 @@ namespace TransportSystem.Api.Models
 
         public void UpdateSatisfaction()
         {
-            Satisfaction = PassengerBehaviour
-                .GetSatisfactionDeterminationAlgorithm(TransmissionType)
-                .GetSatisfaction(this);
+            Satisfaction = Math.Round(
+                PassengerBehaviour
+                    .GetSatisfactionDeterminationAlgorithm(TransmissionType)
+                    .GetSatisfaction(this),
+                2);
             AllQualityCoefficients.Add(QualityCoefficient);
         }
 
