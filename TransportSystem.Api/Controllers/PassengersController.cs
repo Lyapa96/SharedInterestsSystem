@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Remotion.Linq.Clauses.ResultOperators;
 using TransportSystem.Api.Models;
 using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage;
 using TransportSystem.Api.Utilities;
@@ -83,5 +86,46 @@ namespace TransportSystem.Api.Controllers
         public void Delete(int id)
         {
         }
+
+        [HttpPost("smo")]
+        public IActionResult GetNextSmoResult([FromBody] SmoPassenger[] smoPassengers)
+        {
+            
+            var columns = 5;
+            var rows = 10;
+            //всего соседей должно быть 7 или + 3 случайных
+            var countNeighbours = 7;
+            //придумать что то с геометрией 
+            // или сделать возможность 
+            var hashSet = new HashSet<(int id, int sum)>(smoPassengers.Select(x => (tro: int.Parse(x.AgentId),10)));
+             var first = hashSet.First();
+            var allPassengers = new List<Passenger>();
+            for (int i = 0; i < smoPassengers.Length; i++)
+            {
+                var currentSmoPassenger = smoPassengers[i];
+                currentSmoPassenger.Neighbourhood = currentSmoPassenger.Neighbourhood ?? new List<string>();
+
+                
+            }
+
+            foreach (var smoPassenger in smoPassengers)
+            {
+            }
+
+            return Ok();
+        }
+
+    }
+
+    public class SmoPassenger
+    {
+        public string AgentId { get; set; }
+        public string ArriveAgentTime { get; set; }
+        public string EndTime { get; set; }
+        public string StartTime { get; set; }
+        public int ChannelNumber { get; set; }
+        public int EdgeNumber { get; set; }
+        public int QueueCount { get; set; }
+        public List<string> Neighbourhood { get; set; }
     }
 }
