@@ -5,7 +5,7 @@ namespace TransportSystem.Api.Controllers
 {
     public class PassengerInfo
     {
-        public int Number { get; set; }
+        public string Number { get; set; }
         public double Satisfaction { get; set; }
         public double Quality { get; set; }
         public TransportType TransportType { get; set; }

@@ -23,9 +23,9 @@ namespace TransportSystem.Api.Models
 
         private static double GetQualityCoefficientForBus(Passenger passenger)
         {
-            if (passenger.Number <= 3)
+            if (int.Parse(passenger.Id) <= 3)
                 return 0.3;
-            if (passenger.Number <= 6)
+            if (int.Parse(passenger.Id) <= 6)
                 return 0.4;
 
             return 0.5;

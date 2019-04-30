@@ -15,7 +15,7 @@ namespace TransportSystem.Api.Utilities
             var transport = GetRandomtransportType();
             var quality = Math.Round(rnd.NextDouble(), 2);
             var satisfaction = Math.Round(rnd.NextDouble(), 2);
-            return new Passenger(passengerBehaviour, transport, transmissionType, quality, satisfaction, number);
+            return new Passenger(passengerBehaviour, transport, transmissionType, quality, satisfaction, number.ToString());
         }
 
         public static void SetNeighborsPassengers(Passenger[][] passengers, PassengerBehaviour behaviour)

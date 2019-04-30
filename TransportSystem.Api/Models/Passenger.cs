@@ -18,7 +18,7 @@ namespace TransportSystem.Api.Models
             this.passengerInfo = passengerInfo;
             PassengerBehaviour = passengerBehaviour;
             TransmissionType = transmissionType;
-            Number = passengerInfo.Number;
+            Id = passengerInfo.Number;
             TransportType = passengerInfo.TransportType;
             QualityCoefficient = passengerInfo.Quality;
             Satisfaction = passengerInfo.Satisfaction;
@@ -32,15 +32,36 @@ namespace TransportSystem.Api.Models
             TransmissionType transmissionType,
             double qualityCoefficient,
             double satisfaction,
-            int number)
+            string id)
         {
             PassengerBehaviour = passengerBehaviour;
             TransmissionType = transmissionType;
-            Number = number;
+            Id = id;
             TransportType = transportType;
             QualityCoefficient = qualityCoefficient;
             Satisfaction = satisfaction;
             Neighbors = new HashSet<Passenger>();
+        }
+
+        public Passenger(
+            IPassengerBehaviour passengerBehaviour,
+            TransportType transportType,
+            TransmissionType transmissionType,
+            double qualityCoefficient,
+            double satisfaction,
+            string id,
+            List<double> allQualityCoefficients,
+            double firstBusQuality)
+        {
+            PassengerBehaviour = passengerBehaviour;
+            TransmissionType = transmissionType;
+            Id = id;
+            FirstBusQuality = firstBusQuality;
+            TransportType = transportType;
+            QualityCoefficient = qualityCoefficient;
+            Satisfaction = satisfaction;
+            Neighbors = new HashSet<Passenger>();
+            AllQualityCoefficients = allQualityCoefficients ?? new List<double>();
         }
 
         public Passenger()
@@ -52,7 +73,8 @@ namespace TransportSystem.Api.Models
         public IPassengerBehaviour PassengerBehaviour { get; set; }
 
         public double PersonalSatisfaction => 0.1;
-        public int Number { get; set; }
+        public string Id { get; set; }
+        public double FirstBusQuality { get; }
         public TransportType TransportType { get; set; }
         public double QualityCoefficient { get; set; }
         public double Satisfaction { get; set; }
@@ -87,7 +109,7 @@ namespace TransportSystem.Api.Models
 
         public override string ToString()
         {
-            //var allNeighbors = Neighbors.Select(x => x.Number.ToString()).Aggregate((x, y) => x + "," + y);
+            //var allNeighbors = Neighbors.Select(x => x.Id.ToString()).Aggregate((x, y) => x + "," + y);
             return $"{TransportType} k=({QualityCoefficient:0.00}) S=({Satisfaction:0.00})";
         }
 
