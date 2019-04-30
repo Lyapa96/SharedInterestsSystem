@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TransportSystem.Api.Models;
+using static System.Int32;
 
 namespace TransportSystem.Api.Controllers
 {
@@ -25,9 +26,9 @@ namespace TransportSystem.Api.Controllers
 
         private static double GetQualityCoefficientForBus(Passenger passenger)
         {
-            if (passenger.Number <= 3)
+            if (Parse(passenger.Id) <= 3)
                 return 0.3;
-            if (passenger.Number <= 6)
+            if (Parse(passenger.Id) <= 6)
                 return 0.4;
 
             return 0.5;
@@ -42,6 +43,24 @@ namespace TransportSystem.Api.Controllers
             }
 
             return 0.1;
+        }
+
+        public static void ChangeQuality(Passenger[] passengers)
+        {
+            var carCount = passengers.Count(x => x.TransportType == TransportType.Car);
+            var passengersCount = passengers.Length;
+
+            foreach (var passenger in passengers)
+            {
+                passenger.QualityCoefficient = passenger.TransportType == TransportType.Car
+                    ? Math.Round(GetQualityCoefficientForCar(carCount, passengersCount, passenger), 2)
+                    : Math.Round(GetQualityCoefficientForBusInSmo(passenger), 2);
+            }
+        }
+
+        private static double GetQualityCoefficientForBusInSmo(Passenger passenger)
+        {
+            return passenger.FirstBusQuality == 0 ? 0.5 : passenger.FirstBusQuality;
         }
     }
 }

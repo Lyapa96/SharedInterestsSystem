@@ -21,5 +21,16 @@ namespace TransportSystem.Api.Controllers
                     passengers[i][j].UpdateSatisfaction();
             }
         }
+
+        public static void Run(Passenger[] passengers)
+        {
+            foreach (var passenger in passengers)
+                passenger.ChooseNextTransportType();
+
+            TransportSystem.ChangeQuality(passengers);
+
+            foreach (var passenger in passengers)
+                passenger.UpdateSatisfaction();
+        }
     }
 }
