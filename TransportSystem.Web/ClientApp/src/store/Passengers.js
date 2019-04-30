@@ -29,7 +29,8 @@ export const actionCreators = {
 
 export const reducer = (state, action) => {
     state = state || initialState;
-    console.log(action);
+    console.log(`Passengers log input action: ${action.type}`);
+    console.log(state);
     if (action.type === setInitStateType) {
         return initialState;
     }
