@@ -7,44 +7,64 @@ import {
 
 const plotOptions = {
     series: {},
-    column: {}
+    column: {},
 };
 
-const App = () => (
-    <div className="app">
-        <HighchartsChart plotOptions={plotOptions}>
-            <Chart/>
+const options = {
+    legend: {
+        enabled: false
+    }
+};
 
-            <Title>Quality of transport</Title>
-            <Subtitle>red - terrible trips, yellow - normal trips, green - good trips</Subtitle>
-            <Legend layout="vertical" align="right" verticalAlign="middle"/>
+class App extends React.Component {
 
-            <XAxis categories={['1', '3', '7', '10', '11', '12', '20', '25']}
-                   plotBands={[
-                       {
-                           from: -1,
-                           to: 2.5,
-                           color: 'rgba(232, 32, 32, .2)'
-                       },
-                       {
-                           from: 2.5,
-                           to: 5.5,
-                           color: 'rgba(232, 199, 32, .2)'
-                       },
-                       {
-                           from: 5.5,
-                           to: 7.5,
-                           color: 'rgba(58, 153, 49, .3)'
-                       }]}>
-                <XAxis.Title>Quality of trips</XAxis.Title>
-            </XAxis>
+    constructor(props) {
+        super(props)
+    }
 
-            <YAxis>
-                <YAxis.Title>Number of passengers</YAxis.Title>
-                <ColumnSeries name="Trips of bus" data={[14, 9, 7, 10, 11, 12, 6, 3]}/>
-            </YAxis>
-        </HighchartsChart>
-    </div>
-);
+    render() {
+        let data = this.props.data;
+        return (
+            <div className="app">
+                <HighchartsChart options={{
+                    legend: {
+                        enabled: false
+                    }
+                }}>
+                    <Chart/>
+
+                    <Title>Quality of transport</Title>
+                    <Subtitle>red - terrible trips, yellow - normal trips, green - good trips</Subtitle>
+                    <Legend layout="vertical" align="right" verticalAlign="middle"/>
+
+                    <XAxis categories={data.keys}
+                           plotBands={[
+                               {
+                                   from: data.minQualityValue,
+                                   to: data.firstLine,
+                                   color: 'rgba(232, 32, 32, .2)'
+                               },   
+                               {
+                                   from: data.firstLine,
+                                   to: data.secondLine,
+                                   color: 'rgba(232, 199, 32, .2)'
+                               },
+                               {
+                                   from: data.secondLine,
+                                   to: data.maxQualityValue,
+                                   color: 'rgba(58, 153, 49, .3)'
+                               }]}>
+                        <XAxis.Title>Quality of trips</XAxis.Title>
+                    </XAxis>
+
+                    <YAxis>
+                        <YAxis.Title>Number of passengers</YAxis.Title>
+                        <ColumnSeries name="Trips of bus" data={data.values}/>
+                    </YAxis>
+                </HighchartsChart>
+            </div>
+        );
+    }
+}
 
 export default withHighcharts(App, Highcharts);

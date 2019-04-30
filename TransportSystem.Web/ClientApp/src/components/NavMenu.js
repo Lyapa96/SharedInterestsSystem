@@ -36,7 +36,7 @@ export default props => (
                 </LinkContainer>
                 <LinkContainer to={'/smo'}>
                     <NavItem>
-                        <Glyphicon glyph='stats'/> Queueing theory
+                        <Glyphicon glyph='stats'/> Queueing model
                     </NavItem>
                 </LinkContainer>
                 <LinkContainer to={'/info'}>
