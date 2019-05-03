@@ -5,7 +5,7 @@ using TransportSystem.Api.Controllers;
 
 namespace TransportSystem.Api.Models
 {
-    public class NeighborsManager
+    public class NeighboursManager
     {
         private readonly SmoPassengerInfo[] smoPassengers;
         private readonly int columns;
@@ -13,7 +13,7 @@ namespace TransportSystem.Api.Models
         private Dictionary<string, List<string>> idToNeighbours;
         private Random random;
 
-        public NeighborsManager(SmoPassengerInfo[] smoPassengers, int columns, int neighboursCount)
+        public NeighboursManager(SmoPassengerInfo[] smoPassengers, int columns, int neighboursCount)
         {
             random = new Random();
             this.smoPassengers = smoPassengers;

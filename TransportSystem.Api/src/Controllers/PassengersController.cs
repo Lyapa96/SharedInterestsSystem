@@ -85,7 +85,7 @@ namespace TransportSystem.Api.Controllers
                         FirstBusQuality = 0
                     });
             var allPassengers = smoBusPassengers.Concat(carPassengers).ToArray();
-            var manager = new NeighborsManager(allPassengers, smoData.Columns, smoData.NeighboursCount);
+            var manager = new NeighboursManager(allPassengers, smoData.Columns, smoData.NeighboursCount);
             
             for (var i = 0; i < allPassengers.Length; i++)
             {
