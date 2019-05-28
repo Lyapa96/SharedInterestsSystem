@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace Tests
+namespace TransportSystem.Api.Tests
 {
     public class Tests
     {

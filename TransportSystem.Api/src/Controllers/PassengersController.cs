@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TransportSystem.Api.Models;
 using TransportSystem.Api.Models.TransportChooseAlgorithm;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage;
 
 namespace TransportSystem.Api.Controllers
 {
@@ -30,9 +29,7 @@ namespace TransportSystem.Api.Controllers
         public IActionResult SetNeighbors([FromBody] PassData data)
         {
             var allPassengers = data.SmoPassengerInfo;
-
             neighboursManager.SetAllNeighbours(allPassengers, data.Columns, 0);
-
             var averageSatisfaction = Math.Round(allPassengers.Sum(x => x.Satisfaction)/allPassengers.Length, 2);
 
             return Ok(
