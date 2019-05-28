@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage.Sql
+namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage.Sql
 {
     public class QFuncContext : DbContext
     {

@@ -1,4 +1,6 @@
-﻿namespace TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage
+﻿using TransportSystem.Api.Models.Data;
+
+namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage
 {
     public interface IAgentStateStorage
     {

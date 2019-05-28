@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using TransportSystem.Api.Models.TransportChooseAlgorithm;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage;
+using TransportSystem.Api.Models.TransportChooseAlgorithms;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
 
 namespace TransportSystem.Api.Models.SatisfactionDetermination
 {

@@ -1,8 +1,9 @@
 ﻿using System;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage.Sql;
+using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage.Sql;
 using TransportSystem.Api.Utilities;
 
-namespace TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning
+namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
 {
     public static class QLearningAlgoritm
     {

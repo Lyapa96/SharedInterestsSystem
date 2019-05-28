@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TransportSystem.Api.Models;
+using TransportSystem.Api.Models.Data;
 
 namespace TransportSystem.Api.Controllers
 {

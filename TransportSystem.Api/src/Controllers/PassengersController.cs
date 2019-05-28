@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TransportSystem.Api.Models;
-using TransportSystem.Api.Models.TransportChooseAlgorithm;
+using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.Neighbours;
+using TransportSystem.Api.Models.TransportChooseAlgorithms;
 
 namespace TransportSystem.Api.Controllers
 {
@@ -11,16 +13,16 @@ namespace TransportSystem.Api.Controllers
     [ApiController]
     public class PassengersController : ControllerBase
     {
-        private readonly IPassengerBehaviourManager passengerBehaviourManager;
+        private readonly IPassengerBehaviourProvider passengerBehaviourProvider;
         private readonly INeighboursManager neighboursManager;
         private readonly ITransportSystem transportSystem;
 
         public PassengersController(
             ITransportSystem transportSystem, 
-            IPassengerBehaviourManager passengerBehaviourManager,
+            IPassengerBehaviourProvider passengerBehaviourProvider,
             INeighboursManager neighboursManager)
         {
-            this.passengerBehaviourManager = passengerBehaviourManager;
+            this.passengerBehaviourProvider = passengerBehaviourProvider;
             this.neighboursManager = neighboursManager;
             this.transportSystem = transportSystem;
         }
@@ -72,7 +74,7 @@ namespace TransportSystem.Api.Controllers
                 .ToDictionary(
                     x => x.Id,
                     x => new Passenger(
-                        passengerBehaviourManager,
+                        passengerBehaviourProvider,
                         x.Type,
                         transmissionType,
                         x.Quality,

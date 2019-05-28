@@ -1,13 +1,14 @@
 ﻿using System;
 using TransportSystem.Api.Models;
-using TransportSystem.Api.Models.TransportChooseAlgorithm;
+using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.TransportChooseAlgorithms;
 
 namespace TransportSystem.Api.Tests
 {
     public static class TestHelpers
     {
         public static Passenger CreatePassenger(
-            IPassengerBehaviourManager passengerBehaviour,
+            IPassengerBehaviourProvider passengerBehaviour,
             int number,
             ChoiceTransportAlgorithmType algorithmType,
             TransportType transport,

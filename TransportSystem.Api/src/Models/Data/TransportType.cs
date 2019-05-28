@@ -1,4 +1,4 @@
-﻿namespace TransportSystem.Api.Models
+﻿namespace TransportSystem.Api.Models.Data
 {
     public enum TransportType
     {

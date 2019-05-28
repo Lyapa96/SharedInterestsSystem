@@ -3,20 +3,21 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using TransportSystem.Api.Models;
+using TransportSystem.Api.Models.Data;
 using TransportSystem.Api.Models.SatisfactionDetermination;
-using TransportSystem.Api.Models.TransportChooseAlgorithm;
+using TransportSystem.Api.Models.TransportChooseAlgorithms;
 
 namespace TransportSystem.Api.Tests
 {
     public class SatisfactionAlgorithmSpec
     {
         private LastFiveTripsAlgorithm satisfactionAlgorithm;
-        private IPassengerBehaviourManager passengerBehaviour;
+        private IPassengerBehaviourProvider passengerBehaviour;
 
         [SetUp]
         public void SetUp()
         {
-            passengerBehaviour = Substitute.For<IPassengerBehaviourManager>();
+            passengerBehaviour = Substitute.For<IPassengerBehaviourProvider>();
             satisfactionAlgorithm = new LastFiveTripsAlgorithm();
         }
 
@@ -26,7 +27,7 @@ namespace TransportSystem.Api.Tests
             var passenger = TestHelpers.CreatePassenger(passengerBehaviour, 1, ChoiceTransportAlgorithmType.Average, TransportType.Bus, 0.1);
             passenger.QualityCoefficient = 1;
 
-            passenger.AllQualityCoefficients = new List<double>(){1,1,1,1,1};
+            passenger.AllQualityCoefficients = new List<double> {1, 1, 1, 1, 1};
 
             var result = satisfactionAlgorithm.GetSatisfaction(passenger);
 

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TransportSystem.Api.Models.Data;
 
-namespace TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning
+namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
 {
     public class AgentState
     {

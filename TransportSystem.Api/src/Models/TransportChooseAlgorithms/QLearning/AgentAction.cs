@@ -1,4 +1,6 @@
-﻿namespace TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning
+﻿using TransportSystem.Api.Models.Data;
+
+namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
 {
     public class AgentAction
     {

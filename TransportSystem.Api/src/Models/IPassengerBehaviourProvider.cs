@@ -1,11 +1,11 @@
 ﻿using TransportSystem.Api.Models.SatisfactionDetermination;
-using TransportSystem.Api.Models.TransportChooseAlgorithm;
+using TransportSystem.Api.Models.TransportChooseAlgorithms;
 
 namespace TransportSystem.Api.Models
 {
-    public interface IPassengerBehaviourManager
+    public interface IPassengerBehaviourProvider
     {
-        IChoiceTransportAlgorithm GetTransmissionFunc(ChoiceTransportAlgorithmType choiceTransportAlgorithmType);
+        IChoiceTransportAlgorithm GetChoiceTransportAlgorithm(ChoiceTransportAlgorithmType choiceTransportAlgorithmType);
         ISatisfactionDeterminationAlgorithm GetSatisfactionDeterminationAlgorithm(ChoiceTransportAlgorithmType choiceTransportAlgorithmType);
     }
 }

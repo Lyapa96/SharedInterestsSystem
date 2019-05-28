@@ -1,4 +1,6 @@
-﻿namespace TransportSystem.Api.Models.SatisfactionDetermination
+﻿using TransportSystem.Api.Models.Data;
+
+namespace TransportSystem.Api.Models.SatisfactionDetermination
 {
     public interface ISatisfactionDeterminationAlgorithm
     {

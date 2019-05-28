@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using TransportSystem.Api.Models.Data;
 
-namespace TransportSystem.Api.Models
+namespace TransportSystem.Api.Utilities
 {
     public static class TransportSystemHelper
     {

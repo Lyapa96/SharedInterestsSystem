@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using TransportSystem.Api.Controllers;
-using TransportSystem.Api.Models.TransportChooseAlgorithm;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning;
+using TransportSystem.Api.Models.TransportChooseAlgorithms;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
 
-namespace TransportSystem.Api.Models
+namespace TransportSystem.Api.Models.Data
 {
     public class Passenger
     {
         private readonly PassengerInfo passengerInfo;
 
         public Passenger(
-            IPassengerBehaviourManager passengerBehaviourManager,
+            IPassengerBehaviourProvider passengerBehaviourProvider,
             PassengerInfo passengerInfo,
             ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
         {
             this.passengerInfo = passengerInfo;
-            PassengerBehaviourManager = passengerBehaviourManager;
+            PassengerBehaviourProvider = passengerBehaviourProvider;
             ChoiceTransportAlgorithmType = choiceTransportAlgorithmType;
             Id = passengerInfo.Number;
             TransportType = passengerInfo.TransportType;
@@ -27,14 +27,14 @@ namespace TransportSystem.Api.Models
         }
 
         public Passenger(
-            IPassengerBehaviourManager passengerBehaviourManager,
+            IPassengerBehaviourProvider passengerBehaviourProvider,
             TransportType transportType,
             ChoiceTransportAlgorithmType choiceTransportAlgorithmType,
             double qualityCoefficient,
             double satisfaction,
             string id)
         {
-            PassengerBehaviourManager = passengerBehaviourManager;
+            PassengerBehaviourProvider = passengerBehaviourProvider;
             ChoiceTransportAlgorithmType = choiceTransportAlgorithmType;
             Id = id;
             TransportType = transportType;
@@ -44,7 +44,7 @@ namespace TransportSystem.Api.Models
         }
 
         public Passenger(
-            IPassengerBehaviourManager passengerBehaviourManager,
+            IPassengerBehaviourProvider passengerBehaviourProvider,
             TransportType transportType,
             ChoiceTransportAlgorithmType choiceTransportAlgorithmType,
             double qualityCoefficient,
@@ -53,7 +53,7 @@ namespace TransportSystem.Api.Models
             List<double> allQualityCoefficients,
             double firstBusQuality)
         {
-            PassengerBehaviourManager = passengerBehaviourManager;
+            PassengerBehaviourProvider = passengerBehaviourProvider;
             ChoiceTransportAlgorithmType = choiceTransportAlgorithmType;
             Id = id;
             FirstBusQuality = firstBusQuality;
@@ -70,7 +70,7 @@ namespace TransportSystem.Api.Models
             AllQualityCoefficients = new List<double>();
         }
 
-        public IPassengerBehaviourManager PassengerBehaviourManager { get; set; }
+        public IPassengerBehaviourProvider PassengerBehaviourProvider { get; set; }
 
         public double PersonalSatisfaction => 0.1;
         public string Id { get; set; }
@@ -92,15 +92,15 @@ namespace TransportSystem.Api.Models
         public void ChooseNextTransportType()
         {
             PreviousState = new AgentState(Neighbors, Satisfaction, TransportType).GetStringFormat();
-            TransportType = PassengerBehaviourManager
-                .GetTransmissionFunc(ChoiceTransportAlgorithmType)
+            TransportType = PassengerBehaviourProvider
+                .GetChoiceTransportAlgorithm(ChoiceTransportAlgorithmType)
                 .ChooseNextTransportType(Neighbors, TransportType, Satisfaction, DeviationValue);
         }
 
         public void UpdateSatisfaction()
         {
             Satisfaction = Math.Round(
-                PassengerBehaviourManager
+                PassengerBehaviourProvider
                     .GetSatisfactionDeterminationAlgorithm(ChoiceTransportAlgorithmType)
                     .GetSatisfaction(this),
                 2);

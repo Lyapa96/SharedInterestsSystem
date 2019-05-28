@@ -2,9 +2,10 @@
 using NSubstitute;
 using NUnit.Framework;
 using TransportSystem.Api.Models;
-using TransportSystem.Api.Models.TransportChooseAlgorithm;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage;
+using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.TransportChooseAlgorithms;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
 
 namespace TransportSystem.Api.Tests
 {
@@ -13,12 +14,12 @@ namespace TransportSystem.Api.Tests
         private const double deviationStub = 0;
         private IAgentStateStorage storage;
         private QLearningChoiceTransportAlgorithm qLearningTransmissionFunc;
-        private IPassengerBehaviourManager passengerBehaviour;
+        private IPassengerBehaviourProvider passengerBehaviour;
 
         [SetUp]
         public void SetUp()
         {
-            passengerBehaviour = Substitute.For<IPassengerBehaviourManager>();
+            passengerBehaviour = Substitute.For<IPassengerBehaviourProvider>();
             storage = Substitute.For<IAgentStateStorage>();
             qLearningTransmissionFunc = new QLearningChoiceTransportAlgorithm(storage);
         }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage;
+using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
 
 namespace TransportSystem.Api.Models.SatisfactionDetermination
 {

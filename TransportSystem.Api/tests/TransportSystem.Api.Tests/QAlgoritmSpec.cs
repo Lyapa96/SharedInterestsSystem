@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
 
 namespace TransportSystem.Api.Tests
 {

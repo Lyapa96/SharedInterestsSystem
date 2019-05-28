@@ -3,23 +3,25 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using TransportSystem.Api.Models;
-using TransportSystem.Api.Models.TransportChooseAlgorithm;
+using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.TransportChooseAlgorithms;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.Deviation;
 
 namespace TransportSystem.Api.Tests
 {
     public class DeviationFuncSpec
     {
         private double Deviation = 0.01;
-        private DeviationFunc averagingFunc;
-        private IPassengerBehaviourManager passengerBehaviour;
+        private DeviationAlgorithm averagingAlgorithm;
+        private IPassengerBehaviourProvider passengerBehaviour;
         private ChoiceTransportAlgorithmType transmissionType;
 
         [SetUp]
         public void SetUp()
         {
-            passengerBehaviour = Substitute.For<IPassengerBehaviourManager>();
+            passengerBehaviour = Substitute.For<IPassengerBehaviourProvider>();
             transmissionType = ChoiceTransportAlgorithmType.Deviation;
-            averagingFunc = new DeviationFunc();
+            averagingAlgorithm = new DeviationAlgorithm();
         }
 
         [Test]
@@ -36,7 +38,7 @@ namespace TransportSystem.Api.Tests
             };
             const TransportType expectedTransportType = TransportType.Bus;
 
-            var transportType = averagingFunc.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, Deviation);
+            var transportType = averagingAlgorithm.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, Deviation);
 
             transportType.Should().Be(expectedTransportType);
         }
@@ -56,7 +58,7 @@ namespace TransportSystem.Api.Tests
             };
             const TransportType expectedTransportType = TransportType.Car;
 
-            var transportType = averagingFunc.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, Deviation);
+            var transportType = averagingAlgorithm.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, Deviation);
 
             transportType.Should().Be(expectedTransportType);
         }

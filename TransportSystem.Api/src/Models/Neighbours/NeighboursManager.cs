@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TransportSystem.Api.Controllers;
 
-namespace TransportSystem.Api.Models
+namespace TransportSystem.Api.Models.Neighbours
 {
     public class NeighboursManager : INeighboursManager
     {

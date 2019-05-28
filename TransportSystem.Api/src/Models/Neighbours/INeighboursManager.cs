@@ -1,6 +1,6 @@
 ﻿using TransportSystem.Api.Controllers;
 
-namespace TransportSystem.Api.Models
+namespace TransportSystem.Api.Models.Neighbours
 {
     public interface INeighboursManager
     {

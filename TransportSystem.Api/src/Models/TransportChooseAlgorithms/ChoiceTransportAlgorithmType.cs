@@ -1,4 +1,4 @@
-﻿namespace TransportSystem.Api.Models.TransportChooseAlgorithm
+﻿namespace TransportSystem.Api.Models.TransportChooseAlgorithms
 {
     public enum ChoiceTransportAlgorithmType
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TransportSystem.Api.Models;
+using TransportSystem.Api.Models.Data;
 using static System.Int32;
 
 namespace TransportSystem.Api.Controllers

@@ -6,7 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
 using TransportSystem.Api.Controllers;
 using TransportSystem.Api.Models;
-using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage;
+using TransportSystem.Api.Models.Neighbours;
+using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
 
 namespace TransportSystem.Api
 {
@@ -24,7 +25,7 @@ namespace TransportSystem.Api
             services.AddSingleton<ITransportSystem, Controllers.TransportSystem>();
             services.AddSingleton<IAgentStateStorage, MemoryStorage>();
             services.AddSingleton<INeighboursManager, NeighboursManager>();
-            services.AddSingleton<IPassengerBehaviourManager, PassengerBehaviourManager>();
+            services.AddSingleton<IPassengerBehaviourProvider, PassengerBehaviourProvider>();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
