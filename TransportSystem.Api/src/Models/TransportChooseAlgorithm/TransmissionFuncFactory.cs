@@ -7,19 +7,19 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithm
     public class TransmissionFuncFactory
     {
         private const double CarAvailabilityProbability = 85;
-        private readonly Dictionary<TransmissionType, ITransmissionFunc> typeToFunc;
+        private readonly Dictionary<ChoiceTransportAlgorithmType, IChoiceTransportAlgorithm> typeToFunc;
 
         public TransmissionFuncFactory(IAgentStateStorage stateStorage)
         {
-            typeToFunc = new Dictionary<TransmissionType, ITransmissionFunc>
+            typeToFunc = new Dictionary<ChoiceTransportAlgorithmType, IChoiceTransportAlgorithm>
             {
-                {TransmissionType.Average, new AveragingFunc(CarAvailabilityProbability)},
-                {TransmissionType.Deviation, new DeviationFunc()},
-                {TransmissionType.QLearning, new QLearningTransmissionFunc(stateStorage)}
+                {ChoiceTransportAlgorithmType.Average, new AveragingFunc(CarAvailabilityProbability)},
+                {ChoiceTransportAlgorithmType.Deviation, new DeviationFunc()},
+                {ChoiceTransportAlgorithmType.QLearning, new QLearningChoiceTransportAlgorithm(stateStorage)}
             };
         }
 
-        public ITransmissionFunc GetTransmissionFunc(TransmissionType type)
+        public IChoiceTransportAlgorithm GetTransmissionFunc(ChoiceTransportAlgorithmType type)
         {
             return typeToFunc[type];
         }

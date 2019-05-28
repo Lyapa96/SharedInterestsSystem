@@ -4,25 +4,25 @@ using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage;
 
 namespace TransportSystem.Api.Models
 {
-    public class PassengerBehaviour : IPassengerBehaviour
+    public class PassengerBehaviourManager : IPassengerBehaviourManager
     {
         private readonly SatisfactionDeterminationAlgorithmFactory satisfactionDeterminationAlgorithmFactory;
         private readonly TransmissionFuncFactory transmissionFuncFactory;
 
-        public PassengerBehaviour(IAgentStateStorage stateStorage)
+        public PassengerBehaviourManager(IAgentStateStorage stateStorage)
         {
             transmissionFuncFactory = new TransmissionFuncFactory(stateStorage);
             satisfactionDeterminationAlgorithmFactory = new SatisfactionDeterminationAlgorithmFactory(stateStorage);
         }
 
-        public ITransmissionFunc GetTransmissionFunc(TransmissionType transmissionType)
+        public IChoiceTransportAlgorithm GetTransmissionFunc(ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
         {
-            return transmissionFuncFactory.GetTransmissionFunc(transmissionType);
+            return transmissionFuncFactory.GetTransmissionFunc(choiceTransportAlgorithmType);
         }
 
-        public ISatisfactionDeterminationAlgorithm GetSatisfactionDeterminationAlgorithm(TransmissionType transmissionType)
+        public ISatisfactionDeterminationAlgorithm GetSatisfactionDeterminationAlgorithm(ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
         {
-            return satisfactionDeterminationAlgorithmFactory.GetAlgoritm(transmissionType);
+            return satisfactionDeterminationAlgorithmFactory.GetAlgoritm(choiceTransportAlgorithmType);
         }
     }
 }

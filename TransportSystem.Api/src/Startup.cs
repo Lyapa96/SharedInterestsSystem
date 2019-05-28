@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
+using TransportSystem.Api.Controllers;
+using TransportSystem.Api.Models;
+using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage;
 
 namespace TransportSystem.Api
 {
@@ -18,6 +21,11 @@ namespace TransportSystem.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ITransportSystem, Controllers.TransportSystem>();
+            services.AddSingleton<IAgentStateStorage, MemoryStorage>();
+            services.AddSingleton<INeighboursManager, NeighboursManager>();
+            services.AddSingleton<IPassengerBehaviourManager, PassengerBehaviourManager>();
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));

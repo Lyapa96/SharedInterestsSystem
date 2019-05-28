@@ -3,11 +3,11 @@ using TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning.Storage;
 
 namespace TransportSystem.Api.Models.TransportChooseAlgorithm.QLearning
 {
-    public class QLearningTransmissionFunc : ITransmissionFunc
+    public class QLearningChoiceTransportAlgorithm : IChoiceTransportAlgorithm
     {
         private readonly IAgentStateStorage stateStorage;
 
-        public QLearningTransmissionFunc(IAgentStateStorage stateStorage)
+        public QLearningChoiceTransportAlgorithm(IAgentStateStorage stateStorage)
         {
             this.stateStorage = stateStorage;
         }

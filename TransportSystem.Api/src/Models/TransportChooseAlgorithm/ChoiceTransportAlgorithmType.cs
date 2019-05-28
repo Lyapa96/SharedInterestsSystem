@@ -1,6 +1,6 @@
 ﻿namespace TransportSystem.Api.Models.TransportChooseAlgorithm
 {
-    public enum TransmissionType
+    public enum ChoiceTransportAlgorithmType
     {
         Average,
         Deviation,

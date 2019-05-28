@@ -2,7 +2,7 @@
 
 namespace TransportSystem.Api.Models
 {
-    public static class TransportSystem
+    public static class TransportSystemHelper
     {
         public static void ChangeQuality(Passenger[][] passengers)
         {

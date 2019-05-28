@@ -8,17 +8,17 @@ namespace TransportSystem.Api.Utilities
 {
     public static class PassengersHelper
     {
-        public static Passenger CreatePassenger(PassengerBehaviour passengerBehaviour, int number,
-            TransmissionType transmissionType)
+        public static Passenger CreatePassenger(PassengerBehaviourManager passengerBehaviourManager, int number,
+            ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
         {
             var rnd = new Random();
             var transport = GetRandomtransportType();
             var quality = Math.Round(rnd.NextDouble(), 2);
             var satisfaction = Math.Round(rnd.NextDouble(), 2);
-            return new Passenger(passengerBehaviour, transport, transmissionType, quality, satisfaction, number.ToString());
+            return new Passenger(passengerBehaviourManager, transport, choiceTransportAlgorithmType, quality, satisfaction, number.ToString());
         }
 
-        public static void SetNeighborsPassengers(Passenger[][] passengers, PassengerBehaviour behaviour)
+        public static void SetNeighborsPassengers(Passenger[][] passengers, PassengerBehaviourManager behaviourManager)
         {
             var rowCount = passengers.Length;
             var columnCount = passengers.First().Length;
@@ -29,7 +29,7 @@ namespace TransportSystem.Api.Utilities
                 if (j > 0) passengers[i][j].AddNeighbor(passengers[i][j - 1]);
                 if (i < rowCount - 1) passengers[i][j].AddNeighbor(passengers[i + 1][j]);
                 if (j < columnCount - 1) passengers[i][j].AddNeighbor(passengers[i][j + 1]);
-                passengers[i][j].PassengerBehaviour = behaviour;
+                passengers[i][j].PassengerBehaviourManager = behaviourManager;
             }
         }
 

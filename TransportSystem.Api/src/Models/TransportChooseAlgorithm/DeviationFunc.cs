@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TransportSystem.Api.Models.TransportChooseAlgorithm
 {
-    public class DeviationFunc : ITransmissionFunc
+    public class DeviationFunc : IChoiceTransportAlgorithm
     {
         public TransportType ChooseNextTransportType(HashSet<Passenger> neighbors, TransportType currentTransportType,
             double currentSatisfaction, double deviationValue)

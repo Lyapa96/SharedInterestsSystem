@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TransportSystem.Api.Models.TransportChooseAlgorithm
 {
-    public class AveragingFunc : ITransmissionFunc
+    public class AveragingFunc : IChoiceTransportAlgorithm
     {
         private readonly double carAvailabilityProbability;
         private readonly Random rnd;

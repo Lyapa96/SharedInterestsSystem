@@ -11,13 +11,13 @@ namespace TransportSystem.Api.Models
         private readonly PassengerInfo passengerInfo;
 
         public Passenger(
-            IPassengerBehaviour passengerBehaviour,
+            IPassengerBehaviourManager passengerBehaviourManager,
             PassengerInfo passengerInfo,
-            TransmissionType transmissionType)
+            ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
         {
             this.passengerInfo = passengerInfo;
-            PassengerBehaviour = passengerBehaviour;
-            TransmissionType = transmissionType;
+            PassengerBehaviourManager = passengerBehaviourManager;
+            ChoiceTransportAlgorithmType = choiceTransportAlgorithmType;
             Id = passengerInfo.Number;
             TransportType = passengerInfo.TransportType;
             QualityCoefficient = passengerInfo.Quality;
@@ -27,15 +27,15 @@ namespace TransportSystem.Api.Models
         }
 
         public Passenger(
-            IPassengerBehaviour passengerBehaviour,
+            IPassengerBehaviourManager passengerBehaviourManager,
             TransportType transportType,
-            TransmissionType transmissionType,
+            ChoiceTransportAlgorithmType choiceTransportAlgorithmType,
             double qualityCoefficient,
             double satisfaction,
             string id)
         {
-            PassengerBehaviour = passengerBehaviour;
-            TransmissionType = transmissionType;
+            PassengerBehaviourManager = passengerBehaviourManager;
+            ChoiceTransportAlgorithmType = choiceTransportAlgorithmType;
             Id = id;
             TransportType = transportType;
             QualityCoefficient = qualityCoefficient;
@@ -44,17 +44,17 @@ namespace TransportSystem.Api.Models
         }
 
         public Passenger(
-            IPassengerBehaviour passengerBehaviour,
+            IPassengerBehaviourManager passengerBehaviourManager,
             TransportType transportType,
-            TransmissionType transmissionType,
+            ChoiceTransportAlgorithmType choiceTransportAlgorithmType,
             double qualityCoefficient,
             double satisfaction,
             string id,
             List<double> allQualityCoefficients,
             double firstBusQuality)
         {
-            PassengerBehaviour = passengerBehaviour;
-            TransmissionType = transmissionType;
+            PassengerBehaviourManager = passengerBehaviourManager;
+            ChoiceTransportAlgorithmType = choiceTransportAlgorithmType;
             Id = id;
             FirstBusQuality = firstBusQuality;
             TransportType = transportType;
@@ -70,7 +70,7 @@ namespace TransportSystem.Api.Models
             AllQualityCoefficients = new List<double>();
         }
 
-        public IPassengerBehaviour PassengerBehaviour { get; set; }
+        public IPassengerBehaviourManager PassengerBehaviourManager { get; set; }
 
         public double PersonalSatisfaction => 0.1;
         public string Id { get; set; }
@@ -80,7 +80,7 @@ namespace TransportSystem.Api.Models
         public double Satisfaction { get; set; }
         public HashSet<Passenger> Neighbors { get; set; }
         public List<double> AllQualityCoefficients { get; set; }
-        public TransmissionType TransmissionType { get; set; }
+        public ChoiceTransportAlgorithmType ChoiceTransportAlgorithmType { get; set; }
         public double DeviationValue { get; set; }
         public string PreviousState { get; set; }
 
@@ -92,16 +92,16 @@ namespace TransportSystem.Api.Models
         public void ChooseNextTransportType()
         {
             PreviousState = new AgentState(Neighbors, Satisfaction, TransportType).GetStringFormat();
-            TransportType = PassengerBehaviour
-                .GetTransmissionFunc(TransmissionType)
+            TransportType = PassengerBehaviourManager
+                .GetTransmissionFunc(ChoiceTransportAlgorithmType)
                 .ChooseNextTransportType(Neighbors, TransportType, Satisfaction, DeviationValue);
         }
 
         public void UpdateSatisfaction()
         {
             Satisfaction = Math.Round(
-                PassengerBehaviour
-                    .GetSatisfactionDeterminationAlgorithm(TransmissionType)
+                PassengerBehaviourManager
+                    .GetSatisfactionDeterminationAlgorithm(ChoiceTransportAlgorithmType)
                     .GetSatisfaction(this),
                 2);
             AllQualityCoefficients.Add(QualityCoefficient);
