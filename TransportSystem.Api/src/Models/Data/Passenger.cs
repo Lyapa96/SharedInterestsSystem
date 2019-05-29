@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TransportSystem.Api.Controllers;
+using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
 
@@ -8,22 +10,17 @@ namespace TransportSystem.Api.Models.Data
 {
     public class Passenger
     {
-        private readonly PassengerInfo passengerInfo;
-
-        public Passenger(
-            IPassengerBehaviourProvider passengerBehaviourProvider,
-            PassengerInfo passengerInfo,
-            ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
+        public static Passenger Create(PassengerDto x, IPassengerBehaviourProvider passengerBehaviourProvider, ChoiceTransportAlgorithmType algorithmType)
         {
-            this.passengerInfo = passengerInfo;
-            PassengerBehaviourProvider = passengerBehaviourProvider;
-            ChoiceTransportAlgorithmType = choiceTransportAlgorithmType;
-            Id = passengerInfo.Number;
-            TransportType = passengerInfo.TransportType;
-            QualityCoefficient = passengerInfo.Quality;
-            Satisfaction = passengerInfo.Satisfaction;
-            Neighbors = new HashSet<Passenger>();
-            AllQualityCoefficients = passengerInfo.AllQualityCoefficients;
+            return new Passenger(
+                passengerBehaviourProvider,
+                x.Type,
+                algorithmType,
+                x.Quality,
+                x.Satisfaction,
+                x.Id,
+                x.AllQualityCoefficients,
+                x.FirstBusQuality);
         }
 
         public Passenger(
@@ -113,13 +110,18 @@ namespace TransportSystem.Api.Models.Data
             return $"{TransportType} k=({QualityCoefficient:0.00}) S=({Satisfaction:0.00})";
         }
 
-        public PassengerInfo GetPassengersInfo()
+        public PassengerDto ToPassengerDto()
         {
-            passengerInfo.Quality = QualityCoefficient;
-            passengerInfo.Satisfaction = Satisfaction;
-            passengerInfo.TransportType = TransportType;
-
-            return passengerInfo;
+            return new PassengerDto
+            {
+                Id = Id,
+                Neighbours = Neighbors.Select(y => y.Id).ToArray(),
+                Satisfaction = Satisfaction,
+                Quality = QualityCoefficient,
+                Type = TransportType,
+                AllQualityCoefficients = AllQualityCoefficients,
+                FirstBusQuality = FirstBusQuality
+            };
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using TransportSystem.Api.Models;
 using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 
 namespace TransportSystem.Api.Tests

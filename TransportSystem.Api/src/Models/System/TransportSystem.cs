@@ -1,7 +1,6 @@
-﻿using TransportSystem.Api.Models;
-using TransportSystem.Api.Models.Data;
+﻿using TransportSystem.Api.Models.Data;
 
-namespace TransportSystem.Api.Controllers
+namespace TransportSystem.Api.Models.System
 {
     public class TransportSystem : ITransportSystem
     {

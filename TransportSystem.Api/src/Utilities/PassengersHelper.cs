@@ -1,14 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TransportSystem.Api.Controllers;
 using TransportSystem.Api.Models;
 using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 
 namespace TransportSystem.Api.Utilities
 {
     public static class PassengersHelper
     {
+        public static List<Passenger> SetNeighbours(PassengerDto[] passengerDtos, Dictionary<string, Passenger> idToPassengers)
+        {
+            var allPassengers = new List<Passenger>();
+            foreach (var smoPassenger in passengerDtos)
+            {
+                var neighbours = smoPassenger.Neighbours.Select(x => idToPassengers[x]);
+                var currentPassenger = idToPassengers[smoPassenger.Id];
+                foreach (var neighbour in neighbours)
+                {
+                    currentPassenger.AddNeighbor(neighbour);
+                }
+
+                allPassengers.Add(currentPassenger);
+            }
+
+            return allPassengers;
+        }
+
+
         public static Passenger CreatePassenger(PassengerBehaviourProvider passengerBehaviourProvider, int number,
             ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
         {

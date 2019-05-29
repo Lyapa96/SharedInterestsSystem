@@ -9,7 +9,7 @@ namespace TransportSystem.Api.Models.Neighbours
     {
         private readonly int columns;
         private readonly int neighboursCount;
-        private SmoPassengerInfo[] smoPassengers;
+        private PassengerDto[] passengers;
         private Dictionary<string, List<string>> idToNeighbours;
         private readonly Random random;
 
@@ -18,7 +18,7 @@ namespace TransportSystem.Api.Models.Neighbours
             random = new Random();
         }
 
-        public void SetAllNeighbours(SmoPassengerInfo[] allPassengers, int columns, int neighboursCount)
+        public void SetAllNeighbours(PassengerDto[] allPassengers, int columns, int neighboursCount)
         {
             idToNeighbours = allPassengers.ToDictionary(x => x.Id, x => new List<string>());
 
@@ -51,7 +51,7 @@ namespace TransportSystem.Api.Models.Neighbours
                 if (freeNeighbours.Count == 0)
                     continue;
                 var number = random.Next(0, freeNeighbours.Count - 1);
-                var otherNeighbour = smoPassengers[number].Id;
+                var otherNeighbour = passengers[number].Id;
                 randomNeighbours.Add(otherNeighbour);
                 idToNeighbours[otherNeighbour].Add(agentId);
                 freeNeighbours.RemoveAt(number);
@@ -60,7 +60,7 @@ namespace TransportSystem.Api.Models.Neighbours
             return allCurrentNeighbours.Concat(randomNeighbours).ToArray();
         }
 
-        private string[] GetNeighbours(string passengerId, int agentPosition, int columns, SmoPassengerInfo[] passengers)
+        private string[] GetNeighbours(string passengerId, int agentPosition, int columns, PassengerDto[] passengers)
         {
             var neighbours = new List<string>();
             if (agentPosition - 1 > 0)
@@ -82,25 +82,25 @@ namespace TransportSystem.Api.Models.Neighbours
         {
             if (agentPosition - 1 > 0)
             {
-                var leftNeighbourId = smoPassengers[agentPosition - 1].Id;
+                var leftNeighbourId = passengers[agentPosition - 1].Id;
                 TryAddNeighbour(agentId, allCurrentNeighbours, leftNeighbourId);
             }
 
-            if (agentPosition + 1 < smoPassengers.Length)
+            if (agentPosition + 1 < passengers.Length)
             {
-                var rigthNeigbour = smoPassengers[agentPosition + 1].Id;
+                var rigthNeigbour = passengers[agentPosition + 1].Id;
                 TryAddNeighbour(agentId, allCurrentNeighbours, rigthNeigbour);
             }
 
             if (agentPosition - columns > 0)
             {
-                var upNeighbour = smoPassengers[agentPosition - columns].Id;
+                var upNeighbour = passengers[agentPosition - columns].Id;
                 TryAddNeighbour(agentId, allCurrentNeighbours, upNeighbour);
             }
 
-            if (agentPosition + columns < smoPassengers.Length)
+            if (agentPosition + columns < passengers.Length)
             {
-                var downNeighbour = smoPassengers[agentPosition + columns].Id;
+                var downNeighbour = passengers[agentPosition + columns].Id;
                 TryAddNeighbour(agentId, allCurrentNeighbours, downNeighbour);
             }
         }

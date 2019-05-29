@@ -4,6 +4,6 @@ namespace TransportSystem.Api.Models.Neighbours
 {
     public interface INeighboursManager
     {
-        void SetAllNeighbours(SmoPassengerInfo[] allPassengers, int columns, int neighboursCount);
+        void SetAllNeighbours(PassengerDto[] allPassengers, int columns, int neighboursCount);
     }
 }

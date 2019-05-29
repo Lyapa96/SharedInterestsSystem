@@ -4,13 +4,14 @@ using TransportSystem.Api.Models.Data;
 
 namespace TransportSystem.Api.Controllers
 {
-    public class PassengerInfo
+    public class PassengerDto
     {
-        public string Number { get; set; }
-        public TransportType TransportType { get; set; }
+        public string Id { get; set; }
+        public TransportType Type { get; set; }
         public double Quality { get; set; }
         public double Satisfaction { get; set; }
-        public List<int> Neighbors { get; set; }
+        public string[] Neighbours { get; set; }
         public List<double> AllQualityCoefficients { get; set; }
+        public double FirstBusQuality { get; set; }
     }
 }

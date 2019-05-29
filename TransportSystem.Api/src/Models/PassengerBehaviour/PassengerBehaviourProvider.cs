@@ -2,7 +2,7 @@
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
 
-namespace TransportSystem.Api.Models
+namespace TransportSystem.Api.Models.PassengerBehaviour
 {
     public class PassengerBehaviourProvider : IPassengerBehaviourProvider
     {

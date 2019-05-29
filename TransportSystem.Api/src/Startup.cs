@@ -7,7 +7,10 @@ using Newtonsoft.Json.Converters;
 using TransportSystem.Api.Controllers;
 using TransportSystem.Api.Models;
 using TransportSystem.Api.Models.Neighbours;
+using TransportSystem.Api.Models.PassengerBehaviour;
+using TransportSystem.Api.Models.System;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
+using TransportSystem.Api.Models.TransportSystemSatisfaction;
 
 namespace TransportSystem.Api
 {
@@ -22,10 +25,11 @@ namespace TransportSystem.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ITransportSystem, Controllers.TransportSystem>();
+            services.AddSingleton<ITransportSystem, Models.System.TransportSystem>();
             services.AddSingleton<IAgentStateStorage, MemoryStorage>();
             services.AddSingleton<INeighboursManager, NeighboursManager>();
             services.AddSingleton<IPassengerBehaviourProvider, PassengerBehaviourProvider>();
+            services.AddSingleton<ITransportSystemSatisfaction, AverageTransportSystemSatisfaction>();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
