@@ -1,6 +1,6 @@
 import {transformData} from "../helpers/dataParser";
 
-const setInitStateType = 'SET_INIT_STATE';
+const setInitStateType = 'SET_SMO_INIT_STATE';
 const getDataFromSockets = 'GET_DATA_FROM_SOCKETS';
 const setSmoInteractiveMode = "SET_SMO_INTERACTIVE_MODE";
 const runNextStepForSMO = "RUN_NEXT_STEP_FOR_SMO";
@@ -18,6 +18,7 @@ export const actionCreators = {
     setSmoInteractiveMode: (data) => async (dispatch, getState) => {
         let smoPassengers = getState().smo.smoResults;
         const url = 'https://localhost:5003/api/passengers/smo';
+        //const url = 'https://transportsysteminfra.azurewebsites.net/api/passengers/smo';
         const response = await fetch(url, {
             headers: {
                 'Accept': 'application/json',
@@ -28,7 +29,7 @@ export const actionCreators = {
                 smoPassengers: smoPassengers,
                 passengersOnCar: data.passengersOnCar,
                 columns: data.columns,
-                neighboursCount: 7
+                neighboursCount: data.neighboursCount
             })
         });
         const newPassengers = await response.json();
@@ -38,6 +39,7 @@ export const actionCreators = {
         let smoState = getState().smo;
         let currentStep = smoState.smoSteps[smoState.smoSteps.length - 1];
         const url = 'https://localhost:5003/api/passengers/smoStep';
+        //const url = 'https://transportsysteminfra.azurewebsites.net/api/passengers/smoStep';
         const response = await fetch(url, {
             headers: {
                 'Accept': 'application/json',

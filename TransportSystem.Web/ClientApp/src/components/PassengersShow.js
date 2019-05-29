@@ -8,32 +8,33 @@ class PassengersShow extends React.Component {
     }
     
     render() {
-        let passengers = this.props.passengers;
-        let allPassengersCells = [];
-        
-        for (let i = 0; i < this.props.height; i++) {
-            let rows = [];
-            for (let j = 0; j < this.props.width; j++) {
-                let passenger = passengers[i][j];
-                rows.push((
-                    <div className="cell">
-                        <h4>
-                            Passenger {passenger.number}
-                        </h4>
-                        <p>
-                            Satisfaction: <strong>{passenger.satisfaction}</strong>
-                            <br/>
-                            Quality of services: <strong>{passenger.quality}</strong>
-                        </p>
-                        {(passenger.transportType === "Car")
-                            ? <img className="automobile" src="car.jpg" alt="car"/>
-                            : <img className="automobile" src="bus.png" alt="bus"/>}
-                    </div>));
+        let {passengers, columns} = this.props;
+        let rows = [];
+        let row = [];
+        for (let passenger of passengers) {
+            if (row.length === columns) {
+                rows.push((<div className="passengersRow">{row}</div>));
+                row = [];
             }
-            allPassengersCells.push(<div className="passengersRow">{rows}</div>);
+            row.push((
+                <div className="cell">
+                    <h4>
+                        Passenger {passenger.id}
+                    </h4>
+                    <p>
+                        Satisfaction: <strong>{passenger.satisfaction}</strong>
+                        <br/>
+                        Quality of services: <strong>{passenger.quality}</strong>
+                    </p>
+                    {(passenger.type === "Car")
+                        ? <img className="automobile" src="car.jpg" alt="car"/>
+                        : <img className="automobile" src="bus.png" alt="bus"/>}
+                </div>));
         }
+        if (row.length !== 0)
+            rows.push((<div className="passengersRow">{row}</div>));
 
-        return (<div>{allPassengersCells}</div>);
+        return (<div>{rows}</div>);
     }
 }
 

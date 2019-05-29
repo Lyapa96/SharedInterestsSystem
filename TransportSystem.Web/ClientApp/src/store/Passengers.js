@@ -3,27 +3,48 @@ const setMainProperties = 'SET_MAIN_PROPERTIES';
 const setInteractiveMode = 'SET_INTERACTIVE_MODE';
 const getNextStep = 'NEXT_STEP';
 
-const initialState = { initState: true, columns: 0, rows: 0, algorithm: null, passengers: null, interactiveMode: false };
+const initialState = {initState: true, columns: 0, rows: 0, algorithm: null, smoStep: null, interactiveMode: false};
 
 export const actionCreators = {
-    setInitState: () => ({ type: setInitStateType }),
-    setMainProperties: (data) => {return ({ type: setMainProperties, payload: data })},
-    setInteractiveMode: (data) => {return ({ type: setInteractiveMode, payload: data})},
-    getNextStep: () => async (dispatch, getState) => {
-        let state = getState().passengers;
-        console.log(state);
-        const url = 'https://transportsysteminfra.azurewebsites.net/api/passengers';
-        const response = await fetch(url,{
+    setInitState: () => ({type: setInitStateType}),
+    setMainProperties: (data) => {
+        return ({type: setMainProperties, payload: data})
+    },
+    setInteractiveMode: (data) => async (dispatch, getState) => {
+        //console.log(data.passengers[1].id);
+        let body = JSON.stringify({columns: data.columns, passengers: data.passengers});
+        console.log(body);
+        const url = 'https://localhost:5003/api/passengers/set';
+        const response = await fetch(url, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             method: "POST",
-            body: JSON.stringify({algorithmType: state.algorithm.type, passengers: state.passengers})
+            body: body
         });
-        const newPassengers = await response.json();
+        const newSmoStep = await response.json();
+        console.log("cool");
+        console.log(newSmoStep);
+        //console.log(newPassengers);
+        dispatch({type: setInteractiveMode, payload: newSmoStep})
+    },
+    getNextStep: () => async (dispatch, getState) => {
+        let state = getState().passengers;
+        console.log(state);
+        //const url = 'https://transportsysteminfra.azurewebsites.net/api/passengers/smoStep';
+        const url = 'https://localhost:5003/api/passengers/smoStep';
+        const response = await fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(state.smoStep)
+        });
+        const newSmoStep = await response.json();
 
-        dispatch({type: getNextStep, payload: newPassengers});
+        dispatch({type: getNextStep, payload: newSmoStep});
     }
 };
 
@@ -50,11 +71,11 @@ export const reducer = (state, action) => {
 
     if (action.type === setInteractiveMode) {
         console.log(state);
-        return { ...state, passengers: action.payload.passengers, interactiveMode: true}
+        return {...state, smoStep: action.payload, interactiveMode: true}
     }
-    
+
     if (action.type === getNextStep) {
-        return { ...state, passengers: action.payload.passengers}
+        return {...state, smoStep: action.payload}
     }
 
     return state;

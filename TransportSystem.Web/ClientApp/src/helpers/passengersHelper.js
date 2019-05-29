@@ -7,7 +7,7 @@ export function createRandomPassengers(rows, columns, transportTypes) {
         let currentRow = [];
         for (let j = 0; j < columns; j++) {
             currentRow.push({
-                number: currentPassengerNumber++,
+                id: currentPassengerNumber++,
                 satisfaction: Number.parseFloat(Math.random().toFixed(2)),
                 quality: Number.parseFloat(Math.random().toFixed(2)),
                 transportType: transportTypes[randomInteger(0, 1)],
@@ -24,6 +24,29 @@ export function createRandomPassengers(rows, columns, transportTypes) {
         }
     }
     
+    return passengers;
+}
+
+export function createRandomPassengers2(rows, columns, transportTypes) {
+    let passengers = [];
+    let count = rows * columns;
+    for (let i = 0; i < count; i++){
+        let passenger = {
+            id: i + 1,
+            satisfaction: Number.parseFloat(Math.random().toFixed(2)),
+            quality: Number.parseFloat(Math.random().toFixed(2)),
+            type: transportTypes[randomInteger(0, 1)],
+            allQualityCoefficients: []
+        };
+        passengers.push(passenger);
+    }
+    //
+    // for (let i = 0; i < rows; i++) {
+    //     for (let j = 0; j < columns; j++) {
+    //         passengers[i][j].neighbors = getNeighbors(i,j,rows, columns, passengers);
+    //     }
+    // }
+
     return passengers;
 }
 

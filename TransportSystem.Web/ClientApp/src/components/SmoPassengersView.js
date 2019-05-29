@@ -2,8 +2,8 @@ import React from 'react';
 import './PassengersShow.css';
 
 export default ({smoLastStep, columns}) => {
-        let { smoPassengerInfo, iterationStep, averageSatisfaction} = smoLastStep;
-        let passengers = smoPassengerInfo;
+        let { passengers, iterationStep, averageSatisfaction} = smoLastStep;
+
         let rows = [];
         let row = [];
         for (let item of passengers) {
