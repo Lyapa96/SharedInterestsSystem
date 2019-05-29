@@ -17,18 +17,18 @@ namespace TransportSystem.Api.Controllers
     public class PassengersController : ControllerBase
     {
         private readonly IPassengerBehaviourProvider passengerBehaviourProvider;
-        private readonly INeighboursManager neighboursManager;
+        private readonly INeighborsManager neighborsManager;
         private readonly ITransportSystemSatisfaction transportSystemSatisfaction;
         private readonly ITransportSystem transportSystem;
 
         public PassengersController(
             ITransportSystem transportSystem,
             IPassengerBehaviourProvider passengerBehaviourProvider,
-            INeighboursManager neighboursManager,
+            INeighborsManager neighborsManager,
             ITransportSystemSatisfaction transportSystemSatisfaction)
         {
             this.passengerBehaviourProvider = passengerBehaviourProvider;
-            this.neighboursManager = neighboursManager;
+            this.neighborsManager = neighborsManager;
             this.transportSystemSatisfaction = transportSystemSatisfaction;
             this.transportSystem = transportSystem;
         }
@@ -37,15 +37,10 @@ namespace TransportSystem.Api.Controllers
         public IActionResult SetNeighbors([FromBody] PassData data)
         {
             var allPassengers = data.Passengers;
-            neighboursManager.SetAllNeighbours(allPassengers, data.Columns, 0);
+            neighborsManager.SetGeometricNeighbors(allPassengers, data.Columns);
             var averageSatisfaction = transportSystemSatisfaction.Evaluate(allPassengers);
 
-            return Ok(
-                new IterationResult
-                {
-                    Passengers = allPassengers,
-                    AverageSatisfaction = averageSatisfaction
-                });
+            return Ok(new IterationResult(allPassengers,averageSatisfaction));
         }
 
         // GET api/values
@@ -60,7 +55,7 @@ namespace TransportSystem.Api.Controllers
         {
             var allPassengers = GetAllPassengersTogether(smoData);
 
-            neighboursManager.SetAllNeighbours(allPassengers, smoData.Columns, smoData.NeighboursCount);
+            neighborsManager.SetGeometricNeighbors(allPassengers, smoData.Columns);
 
             var averageSatisfaction = transportSystemSatisfaction.Evaluate(allPassengers);
 

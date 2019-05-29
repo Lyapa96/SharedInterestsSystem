@@ -27,7 +27,7 @@ namespace TransportSystem.Api
         {
             services.AddSingleton<ITransportSystem, Models.System.TransportSystem>();
             services.AddSingleton<IAgentStateStorage, MemoryStorage>();
-            services.AddSingleton<INeighboursManager, NeighboursManager>();
+            services.AddSingleton<INeighborsManager, NeighborsManager>();
             services.AddSingleton<IPassengerBehaviourProvider, PassengerBehaviourProvider>();
             services.AddSingleton<ITransportSystemSatisfaction, AverageTransportSystemSatisfaction>();
 

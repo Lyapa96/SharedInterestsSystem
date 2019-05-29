@@ -4,10 +4,22 @@ namespace TransportSystem.Api.Controllers
 {
     public class IterationResult
     {
+        public IterationResult()
+        {
+        }
+
         public PassengerDto[] Passengers { get; set; }
         public double AverageSatisfaction { get; set; }
         public int IterationStep { get; set; }
         public ChoiceTransportAlgorithmType AlgorithmType { get; set; }
+
+
+
+        public IterationResult(PassengerDto[] passengers, double averageSatisfaction)
+        {
+            Passengers = passengers;
+            AverageSatisfaction = averageSatisfaction;
+        }
 
         public IterationResult Next(PassengerDto[] passengers, double averageSatisfaction)
         {
