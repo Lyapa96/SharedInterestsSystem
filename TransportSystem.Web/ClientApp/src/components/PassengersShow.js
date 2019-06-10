@@ -26,7 +26,7 @@ class PassengersShow extends React.Component {
                         <br/>
                         Quality of services: <strong>{passenger.quality}</strong>
                     </p>
-                    {(passenger.type === "Car")
+                    {(passenger.transportType === "Car")
                         ? <img className="automobile" src="car.jpg" alt="car"/>
                         : <img className="automobile" src="bus.png" alt="bus"/>}
                 </div>));

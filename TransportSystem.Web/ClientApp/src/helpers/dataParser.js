@@ -9,11 +9,10 @@ export function transformData(data, channelsQuality) {
     //общее количество агентов в СМО
     //номер канала, на котором обслужился агент
     //номер ребра текщей СМО
-    let quality = 1;
+
     let result = [];
     for (let key in data) {
         let newObjects = data[key].map(x => {
-            //  let id = parseFloat(key.replace(/,/g, '.')) * 10;
             let channel = randomInteger(0, channelsQuality.length - 1);
             let quality = channelsQuality[channel];
             return {

@@ -3,7 +3,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {actionCreators} from '../store/Passengers';
 import PassengersShow from './PassengersShow';
-import {createRandomPassengers, createRandomPassengers2} from '../helpers/passengersHelper';
 
 const selectItems = [
     "Selection algorithm depending on the average level of neighbors",
@@ -34,7 +33,7 @@ class Passengers extends React.Component {
             columns: 3,
             rows: 3,
             select: selectItems[0],
-            algorithmType: types[0],
+            algorithmType: types[0].type,
             passengers: []
         }
     }
@@ -43,7 +42,7 @@ class Passengers extends React.Component {
         return (
             <div>
                 <h3>Init parameters</h3>
-                <form onSubmit="return false">
+                <div>
                     <p>
                         Number of columns: <input type="number" name="columnCount" onChange={({target}) => {
                         this.setState({columns: target.value})
@@ -68,73 +67,76 @@ class Passengers extends React.Component {
                             })}
                         </select>
                     </p>
-                    <input className="btn btn-success" type="button" onClick={() => {
-                        let passengers = createRandomPassengers2(this.state.rows, this.state.columns, transportTypes);
-                        this.savePassengers(passengers);
-                        this.props.setMainProperties(this.state);
-                    }} value="Create"/>
-                </form>
+                    <button className="btn btn-success"
+                            onClick={() => this.props.setMainProperties(this.state)}>Create
+                    </button>
+                </div>
             </div>
         );
     }
 
-    savePassengers = passengers => this.setState({passengers});
-
     getPassengersParametersForm() {
-        let passengers = this.state.passengers;
-        let allPassengersCells = [];
-        let rowsCount = this.state.rows;
-        for (let i = 0; i < rowsCount; i++) {
-            let rows = [];
-            for (let j = 0; j < this.state.columns; j++) {
-                let currentIndex = rowsCount * i + j;
-                let passenger = passengers[currentIndex];
-                rows.push((
-                    <div className="cell">
-                        <h4>
-                            Passenger {passenger.id}
-                        </h4>
-                        <p>
-                            Satisfaction: <input type="number" name="newPassengers[@currentIndex].Satisfaction"
-                                                 onChange={({target}) => {
-                                                     console.log(Number.parseFloat(target.value));
-                                                     console.log(target.value);
-                                                     this.state.passengers[currentIndex].satisfaction = Number.parseFloat(target.value);
-                                                     this.setState(passengers)
-                                                 }
-                                                 }
-                                                 value={passenger.satisfaction}
-                                                 step="0.01" min="0" max="1"/>
-                        </p>
-                        <p>
-                            Quality of services: <input type="number" name="newPassengers[@currentIndex].QualityCoefficient"
-                                                        onChange={({target}) => {
-                                                            this.state.passengers[currentIndex].quality = Number.parseFloat(target.value);
-                                                            this.setState(passengers)
-                                                        }
-                                                        }
-                                                        value={passenger.quality}
-                                                        step="0.01" min="0" max="1"/>
-                        </p>
-                        <p>
-                            <select onChange={({target}) => {
-                                this.state.passengers[currentIndex].transportType = target.value;
-                                this.setState(passengers)
-                            }}
-                                    value={passenger.transportType}
-                                    name="newPassengers[@currentIndex].TransportType">
-                                <option disabled>Select the transport</option>
-                                {transportTypes.map(x => (<option value={x}>{x}</option>))}
-                            </select>
-                        </p>
-                    </div>));
+        let passengers = this.props.smoStep.passengers;
+        let rows = [];
+        let row = [];
+        for (let i = 0; i < passengers.length; i++) {
+            let passenger = passengers[i];
+            let currentIndex = i;
+            if (row.length === this.props.columns) {
+                rows.push((<div className="passengersRow">{row}</div>));
+                row = [];
             }
-            allPassengersCells.push(<div className="passengersRow">{rows}</div>);
+            row.push((
+                <div className="cell">
+                    <h4>
+                        Passenger {passenger.id}
+                    </h4>
+                    <p>
+                        Satisfaction: <input type="number" name="newPassengers[@currentIndex].Satisfaction"
+                                             onChange={({target}) => {
+                                                 let newParameters = {...passenger, satisfaction: target.value};
+                                                 this.props.updatePassenger({
+                                                     passengerIndex: currentIndex,
+                                                     newParameters
+                                                 });
+                                             }
+                                             }
+                                             value={passenger.satisfaction}
+                                             step="0.01" min="0" max="1"/>
+                    </p>
+                    <p>
+                        Quality of services: <input type="number" name="newPassengers[@currentIndex].QualityCoefficient"
+                                                    onChange={({target}) => {
+                                                        let newParameters = {...passenger, quality: target.value};
+                                                        this.props.updatePassenger({
+                                                            passengerIndex: currentIndex,
+                                                            newParameters
+                                                        });
+                                                    }
+                                                    }
+                                                    value={passenger.quality}
+                                                    step="0.01" min="0" max="1"/>
+                    </p>
+                    <p>
+                        <select onChange={({target}) => {
+                            let newParameters = {...passenger, transportType: target.value};
+                            this.props.updatePassenger({passengerIndex: currentIndex, newParameters});
+                        }}
+                                value={passenger.transportType}
+                                name="newPassengers[@currentIndex].TransportType">
+                            <option disabled>Select the transport</option>
+                            {transportTypes.map(x => (<option value={x}>{x}</option>))}
+                        </select>
+                    </p>
+                </div>));
         }
+        if (row.length !== 0)
+            rows.push((<div className="passengersRow">{row}</div>));
 
         return (<div>
-            {allPassengersCells}
-            <button className="btn btn-success" onClick={() => this.props.setInteractiveMode(this.state)}>Submit2</button>
+            {rows}
+            <button className="btn btn-success" onClick={() => this.props.setInteractiveMode(this.state)}>Submit
+            </button>
         </div>);
     }
 

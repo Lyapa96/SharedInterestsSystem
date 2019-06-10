@@ -11,15 +11,16 @@ const initialState = {
     isInteractiveMode: false,
     smoSteps: []
 };
+//const url = 'https://transportsysteminfra.azurewebsites.net/api/passengers/';
+const url = `https://localhost:5003/api/passengers/`;
 
 export const actionCreators = {
     setInitState: () => ({type: setInitStateType}),
     getDataFromSockets: (data) => ({type: getDataFromSockets, payload: {...data, passengers: getData()}}),
     setSmoInteractiveMode: (data) => async (dispatch, getState) => {
         let smoPassengers = getState().smo.smoResults;
-        const url = 'https://localhost:5003/api/passengers/smo';
-        //const url = 'https://transportsysteminfra.azurewebsites.net/api/passengers/smo';
-        const response = await fetch(url, {
+        let method = 'initSmo';
+        const response = await fetch(url + method, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -38,9 +39,8 @@ export const actionCreators = {
     runNextStep: () => async (dispatch, getState) => {
         let smoState = getState().smo;
         let currentStep = smoState.smoSteps[smoState.smoSteps.length - 1];
-        const url = 'https://localhost:5003/api/passengers/smoStep';
-        //const url = 'https://transportsysteminfra.azurewebsites.net/api/passengers/smoStep';
-        const response = await fetch(url, {
+        let method = 'nextStep';
+        const response = await fetch(url + method, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -249,8 +249,6 @@ function getData() {
 
 export const reducer = (state, action) => {
     state = state || initialState;
-    console.log(`Smo log input action: ${action.type}`);
-    console.log(state);
 
     if (action.type === setInitStateType) {
         return initialState;
@@ -269,7 +267,7 @@ export const reducer = (state, action) => {
                 smoResults.push(item);
             }
         }
-        console.log(state);
+
         return {
             ...state,
             isInitState: false,

@@ -15,7 +15,7 @@ const App = ({data}) => (
         <HighchartsChart plotOptions={plotOptions}>
             <Chart />
 
-            <Title>Iterations results</Title>
+            <Title>Iterations results: common satisfaction</Title>
             
             <Legend layout="vertical" align="right" verticalAlign="middle" />
 

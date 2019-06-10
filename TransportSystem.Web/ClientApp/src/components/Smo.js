@@ -5,11 +5,12 @@ import {actionCreators} from '../store/Smo';
 import {bindActionCreators} from "redux";
 import SmoTable from './SmoTable';
 import {getDataToChart} from '../helpers/passengresAggregator';
-
 import {toCsvContent} from "../helpers/csvSelrializer";
 import {downloadCsv} from "../helpers/downloadCsv";
 import SmoPassengersView from "./SmoPassengersView";
 import SmoResultChart from "./SmoResultChart";
+import SmoTransportCountChart from "./SmoTransportCountChart.js";
+import SmoTransportQualityChart from "./SmoTransportQualityChart.js";
 
 const visualisationOptions = [
     {
@@ -67,22 +68,22 @@ class Smo extends React.Component {
                     </p>
                     <p>
                         Number of passengers on car: <input type="number" name="columnCount" onChange={({target}) => {
-                        this.setState({passengersOnCar: target.value})
+                        this.setState({passengersOnCar: Number(target.value)})
                     }} value={this.state.passengersOnCar} step="1" min="1" max="50"/>
                     </p>
                     <p>
                         Number of channel: <input type="number" name="columnCount" onChange={({target}) => {
                         this.setState({channelCount: Number(target.value)})
-                        }} value={this.state.channelCount} step="1" min="1" max="20"/>
+                    }} value={this.state.channelCount} step="1" min="1" max="20"/>
                     </p>
                     <p>
                         Columns: <input type="number" name="columnCount" onChange={({target}) => {
-                        this.setState({columns: target.value})
+                        this.setState({columns: Number(target.value)})
                     }} value={this.state.columns} step="1" min="1" max="10"/>
                     </p>
                     <p>
                         Number of neighbours: <input type="number" name="columnCount" onChange={({target}) => {
-                        this.setState({neighboursCount: target.value})
+                        this.setState({neighboursCount: Number(target.value)})
                     }} value={this.state.neighboursCount} step="1" min="2" max="10"/>
                     </p>
                     <input className="btn btn-success" type="button"
@@ -106,7 +107,7 @@ class Smo extends React.Component {
             : <div/>;
 
         let downloadSmoButton = (!this.props.isInitState)
-            ? <button className="btn btn-primary" href="https://localhost:5003/api/passengers" onClick={() => {
+            ? <button className="btn btn-primary" href="#" onClick={() => {
                 console.log("download csv");
                 let headers = visualisationOptions.map(x => x.columnName);
                 let data = this.props.smoResults.map(x => visualisationOptions.map(y => x[y.objectFieldName].toString()));
@@ -117,36 +118,52 @@ class Smo extends React.Component {
             : <div/>;
 
         let setInteractiveModeButton = (!this.props.isInitState && this.props.smoSteps.length === 0)
-            ? <button className="btn btn-success" onClick={() => this.props.setSmoInteractiveMode(this.state)}>Start interactive
+            ? <button className="btn btn-success" onClick={() => this.props.setSmoInteractiveMode(this.state)}>Start
+                interactive
                 mod</button>
             : <div/>;
 
-        let manyPassengersView = (!this.props.isInitState && this.props.isInteractiveMode) 
-            ? <SmoPassengersView smoLastStep={this.props.smoSteps[this.props.smoSteps.length-1]} columns={this.state.columns}/> :
+        let step = this.props.smoSteps[this.props.smoSteps.length - 1];
+        let manyPassengersView = (!this.props.isInitState && this.props.isInteractiveMode)
+            ? <SmoPassengersView smoLastStep={step} passengers={step.passengers} columns={this.state.columns}/> :
             <div/>;
 
-        let runButton = (<button className="btn btn-success" onClick={() => this.props.runNextStep()}>Run next step</button>);
-        let downloadResultButton = (<button className="btn btn-primary" href="https://localhost:5003/api/passengers" onClick={() => {
-            console.log("download csv");
-            let headers = visualisationOptions.map(x => x.columnName);
-            let data = this.props.smoResults.map(x => visualisationOptions.map(y => x[y.objectFieldName].toString()));
-            let content = toCsvContent(headers, data);
-            downloadCsv(content, 'data');
-        }
-        }>Download csv</button>);
+        let runButton = (
+            <button className="btn btn-success" onClick={() => this.props.runNextStep()}>Run next step</button>);
+        let downloadResultButton = (
+            <button className="btn btn-primary" href="#" onClick={() => {
+                console.log("download csv");
+                let headers = visualisationOptions.map(x => x.columnName);
+                let data = this.props.smoResults.map(x => visualisationOptions.map(y => x[y.objectFieldName].toString()));
+                let content = toCsvContent(headers, data);
+                downloadCsv(content, 'data');
+            }
+            }>Download csv</button>);
         let buttonsForPassengersSystem = (!this.props.isInitState && this.props.smoSteps.length !== 0) ?
             (<div style={{"margin-bottom": "20px"}}>
                 <div style={{display: "inline-block", "margin-right": "10px"}}>
-                {runButton}
+                    {runButton}
                 </div>
                 {downloadResultButton}
             </div>) : <div/>;
-        
+
         let results = this.props.smoSteps.map(x => x.averageSatisfaction);
-        let restulChart = ((!this.props.isInitState && this.props.smoSteps.length !== 0))
-        ? <SmoResultChart data={results}/>
-        : <div/>;
-        
+        let resultChart = ((!this.props.isInitState && this.props.smoSteps.length !== 0))
+            ? <SmoResultChart data={results}/>
+            : <div/>;
+
+        let carData = this.props.smoSteps.map(x => x.passengers.filter(p => p.transportType === 'Car').length);
+        let busData = this.props.smoSteps.map(x => x.passengers.filter(p => p.transportType === 'Bus').length);
+        let countChart = ((!this.props.isInitState && this.props.smoSteps.length !== 0))
+            ? <SmoTransportCountChart carData={carData} busData={busData}/>
+            : <div/>;
+
+        let catQualityData = this.props.smoSteps.map(x => this.getAverageQualityByType(x.passengers, 'Car'));
+        let busQualityData = this.props.smoSteps.map(x => this.getAverageQualityByType(x.passengers, 'Bus'));
+        let qualityChar = ((!this.props.isInitState && this.props.smoSteps.length !== 0))
+            ? <SmoTransportQualityChart carQualityData={catQualityData} busQualityData={busQualityData}/>
+            : <div/>;
+
         return (
             <div>
                 {mainPart}
@@ -162,8 +179,21 @@ class Smo extends React.Component {
                 {setInteractiveModeButton}
                 {manyPassengersView}
                 {buttonsForPassengersSystem}
-                {restulChart}
+                {resultChart}
+                {countChart}
+                {qualityChar}
             </div>)
+    }
+
+    getAverageQualityByType(passengers, type) {
+        let passengersByType = passengers.filter(p => p.transportType === type);
+
+        let allSum = passengersByType.reduce((sum, pass) => {
+            sum += pass.satisfaction;
+            return sum;
+        }, 0);
+
+        return allSum / passengersByType.length;
     }
 }
 
