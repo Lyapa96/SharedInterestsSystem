@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
-using TransportSystem.Api.Models;
-using TransportSystem.Api.Models.Data;
 
-namespace TransportSystem.Api.Controllers
+namespace TransportSystem.Api.Models.Data
 {
     public class PassengerDto
     {
         public string Id { get; set; }
-        public TransportType Type { get; set; }
+        public TransportType TransportType { get; set; }
         public double Quality { get; set; }
         public double Satisfaction { get; set; }
         public string[] Neighbours { get; set; }

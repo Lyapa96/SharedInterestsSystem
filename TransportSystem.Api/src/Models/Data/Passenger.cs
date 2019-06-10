@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TransportSystem.Api.Controllers;
 using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
@@ -14,7 +13,7 @@ namespace TransportSystem.Api.Models.Data
         {
             return new Passenger(
                 passengerBehaviourProvider,
-                x.Type,
+                x.TransportType,
                 algorithmType,
                 x.Quality,
                 x.Satisfaction,
@@ -118,7 +117,7 @@ namespace TransportSystem.Api.Models.Data
                 Neighbours = Neighbors.Select(y => y.Id).ToArray(),
                 Satisfaction = Satisfaction,
                 Quality = QualityCoefficient,
-                Type = TransportType,
+                TransportType = TransportType,
                 AllQualityCoefficients = AllQualityCoefficients,
                 FirstBusQuality = FirstBusQuality
             };

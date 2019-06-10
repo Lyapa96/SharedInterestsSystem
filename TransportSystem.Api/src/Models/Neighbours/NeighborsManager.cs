@@ -1,77 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
-using TransportSystem.Api.Controllers;
+using TransportSystem.Api.Models.Data;
 
 namespace TransportSystem.Api.Models.Neighbours
 {
     public class NeighborsManager : INeighborsManager
     {
-        private readonly Random random;
+        private readonly IRandomizer randomizer;
 
-        public NeighborsManager()
+        public NeighborsManager(IRandomizer randomizer)
         {
-            random = new Random();
+            this.randomizer = randomizer;
         }
 
-        public void SetGeometricNeighbors(PassengerDto[] allPassengers, int columns)
-        {
-            for (var index = 0; index < allPassengers.Length; index++)
-            {
-                allPassengers[index].Neighbours = GetNeighbors(index, columns, allPassengers);
-            }
-        }
-
-        public Dictionary<string, List<string>> SetGeometricNeighbors2(PassengerDto[] allPassengers, int columns)
+        public Dictionary<string, List<string>> GetGeometricNeighborhood(PassengerDto[] allPassengers, int columns)
         {
             return allPassengers
                 .Select((passenger, index) => (id: passenger.Id, neighbors: GetNeighbors(index, columns, allPassengers).ToList()))
                 .ToDictionary(x => x.id, x => x.neighbors);
         }
 
-        public Dictionary<string, List<string>> SetEachPassengerNeighbors(int neighborsCount, int columns, PassengerDto[] allPassengers)
+        public Dictionary<string, List<string>> GetEachPassengerNeighbors(int neighborsCount, int columns, PassengerDto[] allPassengers)
         {
-            SetGeometricNeighbors(allPassengers, columns);
+            var neighborhoodInformation = GetGeometricNeighborhood(allPassengers, columns);
 
-            var neighborhoodInformation = allPassengers.ToDictionary(x => x.Id, x => x.Neighbours.ToList());
-
-            foreach (var passenger in allPassengers)
+            foreach (var passengerId in allPassengers.Select(passenger => passenger.Id))
             {
-                var appropriateCandidates = GetAppropriateCandidates(passenger, allPassengers).ToList();
-                var needCountPassengers = neighborsCount - neighborhoodInformation[passenger.Id].Count;
-                var randomNeighbors = GetRandomNeighbors(appropriateCandidates, needCountPassengers);
-                foreach (var randomNeighbor in randomNeighbors)
+                var appropriateCandidates = GetAppropriateCandidates(passengerId, neighborhoodInformation, neighborsCount).ToList();
+                var needCountPassengers = neighborsCount - neighborhoodInformation[passengerId].Count;
+                var randomNeighborsIds = GetRandomNeighbors(appropriateCandidates, needCountPassengers);
+                foreach (var randomNeighborId in randomNeighborsIds)
                 {
-                    neighborhoodInformation[randomNeighbor].Add(passenger.Id);
-                    neighborhoodInformation[passenger.Id].Add(randomNeighbor);
+                    neighborhoodInformation[randomNeighborId].Add(passengerId);
+                    neighborhoodInformation[passengerId].Add(randomNeighborId);
                 }
             }
 
             return neighborhoodInformation;
         }
 
-        private List<string> GetRandomNeighbors(List<PassengerDto> appropriateCandidates, int needCountPassengers)
+        private List<string> GetRandomNeighbors(List<string> appropriateCandidates, int needCountPassengers)
         {
             var randomNeighbors = new List<string>();
             for (var i = 0; i < needCountPassengers; i++)
             {
                 if (appropriateCandidates.Count == 0)
                     return randomNeighbors;
-                var randomPassengerIndex = random.Next(0, appropriateCandidates.Count - 1);
-                var randomPassenger = appropriateCandidates[randomPassengerIndex];
+                var randomPassengerIndex = randomizer.GetRandomNumber(0, appropriateCandidates.Count - 1);
+                var randomPassengerId = appropriateCandidates[randomPassengerIndex];
 
-                randomNeighbors.Add(randomPassenger.Id);
+                randomNeighbors.Add(randomPassengerId);
                 appropriateCandidates.RemoveAt(randomPassengerIndex);
             }
 
             return randomNeighbors;
         }
 
-        private IEnumerable<PassengerDto> GetAppropriateCandidates(PassengerDto passenger, PassengerDto[] allPassenger)
+        private IEnumerable<string> GetAppropriateCandidates(
+            string passengerId,
+            Dictionary<string, List<string>> neighborhood,
+            int neighborsCount)
         {
-            return allPassenger.Where(x => x.Id != passenger.Id && !x.Neighbours.Contains(x.Id));
+            return neighborhood
+                .Select(x => x.Key)
+                .Where(otherPassengerId => otherPassengerId != passengerId)
+                .Where(id => !neighborhood[passengerId].Contains(id))
+                .Where(id => neighborhood[id].Count < neighborsCount);
         }
 
         private string[] GetNeighbors(int agentPosition, int columns, PassengerDto[] passengers)

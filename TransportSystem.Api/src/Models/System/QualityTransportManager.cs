@@ -59,7 +59,9 @@ namespace TransportSystem.Api.Models.System
 
         private static double GetQualityCoefficientForBusInSmo(Passenger passenger)
         {
-            return passenger.FirstBusQuality == 0 ? 0.5 : passenger.FirstBusQuality;
+            return Math.Abs(passenger.FirstBusQuality) < 0.001 
+                ? 0.5 
+                : passenger.FirstBusQuality;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using TransportSystem.Api.Controllers;
+using TransportSystem.Api.Models.Data;
 
 namespace TransportSystem.Api.Models.TransportSystemSatisfaction
 {

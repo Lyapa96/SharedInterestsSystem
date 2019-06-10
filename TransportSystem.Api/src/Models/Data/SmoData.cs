@@ -1,4 +1,4 @@
-﻿namespace TransportSystem.Api.Controllers
+﻿namespace TransportSystem.Api.Models.Data
 {
     public class SmoData
     {

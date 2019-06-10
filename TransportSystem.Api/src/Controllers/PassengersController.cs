@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using TransportSystem.Api.Models;
 using TransportSystem.Api.Models.Data;
 using TransportSystem.Api.Models.Neighbours;
 using TransportSystem.Api.Models.PassengerBehaviour;
@@ -33,29 +31,31 @@ namespace TransportSystem.Api.Controllers
             this.transportSystem = transportSystem;
         }
 
-        [HttpPost("set")]
-        public IActionResult SetNeighbors([FromBody] PassData data)
+        [HttpPost("init")]
+        public IActionResult InitPassengers([FromBody] InitPassengerInfo initPassengerInfo)
         {
-            var allPassengers = data.Passengers;
-            neighborsManager.SetGeometricNeighbors(allPassengers, data.Columns);
+            var allPassengers = PassengersHelper.CreatePassengers(initPassengerInfo.Columns, initPassengerInfo.Rows);
+            var neighborhood = neighborsManager.GetGeometricNeighborhood(allPassengers, initPassengerInfo.Columns);
+            allPassengers.SetNeighborhood(neighborhood);
+
             var averageSatisfaction = transportSystemSatisfaction.Evaluate(allPassengers);
 
-            return Ok(new IterationResult(allPassengers,averageSatisfaction));
+            return Ok(
+                new IterationResult
+                {
+                    AlgorithmType = initPassengerInfo.AlgorithmType,
+                    IterationStep = 0,
+                    AverageSatisfaction = averageSatisfaction,
+                    Passengers = allPassengers
+                });
         }
 
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        [HttpPost("initSmo")]
+        public IActionResult InitPassengersFromSmo([FromBody] SmoData smoData)
         {
-            return new[] {"value1", "value2"};
-        }
-
-        [HttpPost("smo")]
-        public IActionResult GetNeighbours([FromBody] SmoData smoData)
-        {
-            var allPassengers = GetAllPassengersTogether(smoData);
-
-            neighborsManager.SetGeometricNeighbors(allPassengers, smoData.Columns);
+            var allPassengers = PassengersHelper.GetAllPassengersTogether(smoData);
+            var neighborhood = neighborsManager.GetEachPassengerNeighbors(smoData.NeighboursCount, smoData.Columns, allPassengers);
+            allPassengers.SetNeighborhood(neighborhood);
 
             var averageSatisfaction = transportSystemSatisfaction.Evaluate(allPassengers);
 
@@ -68,53 +68,32 @@ namespace TransportSystem.Api.Controllers
                 });
         }
 
-        [HttpPost("smoStep")]
+        [HttpPost("nextStep")]
         public IActionResult GetNextStep([FromBody] IterationResult previousIterationResult)
         {
             var idToPassenger = previousIterationResult.Passengers
                 .ToDictionary(
                     x => x.Id,
                     x => Passenger.Create(x, passengerBehaviourProvider, previousIterationResult.AlgorithmType));
-            var allPassengers = PassengersHelper.SetNeighbours(previousIterationResult.Passengers, idToPassenger).ToArray();
+            var allPassengers = PassengersHelper
+                .CreatePassengeres(previousIterationResult.Passengers, idToPassenger)
+                .ToArray();
 
             transportSystem.MakeIteration(allPassengers);
 
-            var snoPassengerInfo = allPassengers
+            var passengerDtos = allPassengers
                 .Select(x => x.ToPassengerDto())
                 .ToArray();
 
-            var averageSatisfaction = transportSystemSatisfaction.Evaluate(snoPassengerInfo);
+            var averageSatisfaction = transportSystemSatisfaction.Evaluate(passengerDtos);
 
-            return Ok(previousIterationResult.Next(snoPassengerInfo, averageSatisfaction));
+            return Ok(previousIterationResult.Next(passengerDtos, averageSatisfaction));
         }
 
-        private static PassengerDto[] GetAllPassengersTogether(SmoData smoData)
+        [HttpGet("ping")]
+        public ActionResult<string> Get()
         {
-            const double defaultSatisfaction = 0.5;
-            var smoBusPassengers = smoData.SmoPassengers
-                .Select(
-                    x => new PassengerDto
-                    {
-                        Id = x.AgentId,
-                        Quality = x.Quality,
-                        Type = TransportType.Bus,
-                        Satisfaction = defaultSatisfaction,
-                        FirstBusQuality = x.Quality
-                    })
-                .ToArray();
-            var carPassengers = Enumerable.Range(0, smoData.PassengersOnCar)
-                .Select(
-                    x => new PassengerDto
-                    {
-                        Id = $"car.{x}",
-                        Quality = 1 - (double) smoData.PassengersOnCar/(smoData.PassengersOnCar + smoBusPassengers.Length),
-                        Type = TransportType.Car,
-                        Satisfaction = defaultSatisfaction,
-                        FirstBusQuality = 0
-                    });
-
-            var allPassengers = smoBusPassengers.Concat(carPassengers).ToArray();
-            return allPassengers;
+            return "pong";
         }
     }
 }

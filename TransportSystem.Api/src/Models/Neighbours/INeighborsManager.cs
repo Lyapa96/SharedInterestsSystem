@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using TransportSystem.Api.Controllers;
+using TransportSystem.Api.Models.Data;
 
 namespace TransportSystem.Api.Models.Neighbours
 {
     public interface INeighborsManager
     {
-        void SetGeometricNeighbors(PassengerDto[] allPassengers, int columns);
-
-        Dictionary<string, List<string>> SetEachPassengerNeighbors(int neighborsCount, int columns, PassengerDto[] allPassengers);
+        Dictionary<string, List<string>> GetGeometricNeighborhood(PassengerDto[] allPassengers, int columns);
+        Dictionary<string, List<string>> GetEachPassengerNeighbors(int neighborsCount, int columns, PassengerDto[] allPassengers);
     }
 }
