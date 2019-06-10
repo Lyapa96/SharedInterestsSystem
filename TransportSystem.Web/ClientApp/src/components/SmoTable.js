@@ -1,15 +1,15 @@
 import React from 'react';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 
 
 export default class SmoTable extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
-    
+
     render() {
         return (
-            <BootstrapTable data={ this.props.data } striped={ true } hover={ true } condensed={ true }>
+            <BootstrapTable data={this.props.data} striped={true} hover={true} condensed={true}>
                 <TableHeaderColumn isKey dataField='agentId'>Agent ID</TableHeaderColumn>
                 <TableHeaderColumn dataField='arriveAgentTime'>Agent arrive time</TableHeaderColumn>
                 {/*<TableHeaderColumn dataField='startTime'>Start Time</TableHeaderColumn>*/}

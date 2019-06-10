@@ -2,8 +2,6 @@
 import { Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './components/Home';
-import Counter from './components/Counter';
-import FetchData from './components/FetchData';
 import Info from './components/Info';
 import Passengers from './components/Passengers';
 import Smo from './components/Smo'
@@ -11,8 +9,6 @@ import Smo from './components/Smo'
 export default () => (
   <Layout>
     <Route exact path='/' component={Home} />
-    <Route path='/counter' component={Counter} />
-    <Route path='/fetchdata/:startDateIndex?' component={FetchData} />
     <Route path='/info' component={Info} />
     <Route path='/passengers' component={Passengers} />
     <Route path='/smo' component={Smo} />

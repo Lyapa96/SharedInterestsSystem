@@ -1,24 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 const Home = props => (
-  <div>
-    {/*<h1>Hello, world!</h1>*/}
-    {/*<p>Welcome to your new single-page application, built with:</p>*/}
-    {/*<ul>*/}
-      {/*<li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>*/}
-      {/*<li><a href='https://facebook.github.io/react/'>React</a> and <a href='https://redux.js.org/'>Redux</a> for client-side code</li>*/}
-      {/*<li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>*/}
-    {/*</ul>*/}
-    {/*<p>To help you get started, we've also set up:</p>*/}
-    {/*<ul>*/}
-      {/*<li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>*/}
-      {/*<li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>*/}
-      {/*<li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>*/}
-    {/*</ul>*/}
-    {/*<p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>*/}
-    <h1>Welcome to association scientific web services!!!</h1>
-  </div>
+    <div>
+        <h1>Welcome to association scientific web services!</h1>
+        <p>
+            The current work is devoted to building a model for assessing the satisfaction of passenger service by the
+            public transport system. The system is constructed using intelligent agents, whose acting is based on
+            self-learning principles. The agents are passengers who depend on transport and can choose between two
+            modes: a car or a bus, where their choice of transport mode for the next day is based on their level of
+            satisfaction and their neighbors’ satisfaction with the mode they used the day before. The paper considers
+            several algorithms of agent behavior, one of which is based on reinforcement learning. Overall, the
+            algorithms take into account the history of the agent’s previous trips and the quality of transport
+            services. The outcomes could be applied in assessing the quality of the transport system from the point of
+            view of passengers.
+        </p>
+    </div>
 );
 
 export default connect()(Home);

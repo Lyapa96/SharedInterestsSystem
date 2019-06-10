@@ -1,15 +1,11 @@
 ﻿import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
-import * as Counter from './Counter';
-import * as WeatherForecasts from './WeatherForecasts';
 import * as Passengers from './Passengers';
 import * as Smo from './Smo.js';
 
 export default function configureStore(history, initialState) {
     const reducers = {
-        counter: Counter.reducer,
-        weatherForecasts: WeatherForecasts.reducer,
         passengers: Passengers.reducer,
         smo: Smo.reducer
     };
