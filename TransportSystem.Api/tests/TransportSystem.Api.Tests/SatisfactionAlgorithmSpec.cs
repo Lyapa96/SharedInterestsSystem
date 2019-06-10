@@ -2,7 +2,6 @@
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
-using TransportSystem.Api.Models;
 using TransportSystem.Api.Models.Data;
 using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.SatisfactionDetermination;
@@ -27,7 +26,6 @@ namespace TransportSystem.Api.Tests
         {
             var passenger = TestHelpers.CreatePassenger(passengerBehaviour, 1, ChoiceTransportAlgorithmType.Average, TransportType.Bus, 0.1);
             passenger.QualityCoefficient = 1;
-
             passenger.AllQualityCoefficients = new List<double> {1, 1, 1, 1, 1};
 
             var result = satisfactionAlgorithm.GetSatisfaction(passenger);

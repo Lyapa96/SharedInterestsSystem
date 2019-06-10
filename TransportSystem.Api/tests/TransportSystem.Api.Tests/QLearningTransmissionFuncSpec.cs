@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using NSubstitute;
 using NUnit.Framework;
-using TransportSystem.Api.Models;
 using TransportSystem.Api.Models.Data;
 using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
@@ -12,7 +11,7 @@ namespace TransportSystem.Api.Tests
 {
     public class QLearningTransmissionFuncSpec
     {
-        private const double deviationStub = 0;
+        private const double DeviationStub = 0;
         private IAgentStateStorage storage;
         private QLearningChoiceTransportAlgorithm qLearningTransmissionFunc;
         private IPassengerBehaviourProvider passengerBehaviour;
@@ -39,7 +38,7 @@ namespace TransportSystem.Api.Tests
                 TestHelpers.CreatePassenger(passengerBehaviour, 3, transmissionType, TransportType.Car, neighborsSatisfaction)
             };
 
-            qLearningTransmissionFunc.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, deviationStub);
+            qLearningTransmissionFunc.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, DeviationStub);
             
             storage.Received().GetBestNextTransport(Arg.Any<string>());
         }
