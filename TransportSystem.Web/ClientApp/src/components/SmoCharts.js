@@ -1,20 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Highcharts from 'highcharts';
 import {
     HighchartsChart, Chart, withHighcharts, XAxis, YAxis, Title, Subtitle, Legend, ColumnSeries
 } from 'react-jsx-highcharts';
-
-
-const plotOptions = {
-    series: {},
-    column: {},
-};
-
-const options = {
-    legend: {
-        enabled: false
-    }
-};
 
 class App extends React.Component {
 
