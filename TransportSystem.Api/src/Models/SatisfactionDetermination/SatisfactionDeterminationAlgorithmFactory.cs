@@ -18,7 +18,7 @@ namespace TransportSystem.Api.Models.SatisfactionDetermination
             };
         }
 
-        public ISatisfactionDeterminationAlgorithm GetAlgoritm(ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
+        public ISatisfactionDeterminationAlgorithm GetAlgorithm(ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
         {
             return typeToAlgorithm[choiceTransportAlgorithmType];
         }

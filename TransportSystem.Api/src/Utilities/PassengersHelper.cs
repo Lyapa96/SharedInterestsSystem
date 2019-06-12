@@ -46,7 +46,7 @@ namespace TransportSystem.Api.Utilities
             }
         }
 
-        public static List<Passenger> CreatePassengeres(PassengerDto[] passengerDtos, Dictionary<string, Passenger> idToPassengers)
+        public static List<Passenger> CreatePassengers(PassengerDto[] passengerDtos, Dictionary<string, Passenger> idToPassengers)
         {
             var allPassengers = new List<Passenger>();
             foreach (var smoPassenger in passengerDtos)

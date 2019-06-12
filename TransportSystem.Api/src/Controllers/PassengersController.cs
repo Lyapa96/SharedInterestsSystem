@@ -76,7 +76,7 @@ namespace TransportSystem.Api.Controllers
                     x => x.Id,
                     x => Passenger.Create(x, passengerBehaviourProvider, previousIterationResult.AlgorithmType));
             var allPassengers = PassengersHelper
-                .CreatePassengeres(previousIterationResult.Passengers, idToPassenger)
+                .CreatePassengers(previousIterationResult.Passengers, idToPassenger)
                 .ToArray();
 
             transportSystem.MakeIteration(allPassengers);

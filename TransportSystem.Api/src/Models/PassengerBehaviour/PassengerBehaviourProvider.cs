@@ -22,7 +22,7 @@ namespace TransportSystem.Api.Models.PassengerBehaviour
 
         public ISatisfactionDeterminationAlgorithm GetSatisfactionDeterminationAlgorithm(ChoiceTransportAlgorithmType choiceTransportAlgorithmType)
         {
-            return satisfactionDeterminationAlgorithmFactory.GetAlgoritm(choiceTransportAlgorithmType);
+            return satisfactionDeterminationAlgorithmFactory.GetAlgorithm(choiceTransportAlgorithmType);
         }
     }
 }
