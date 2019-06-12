@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using TransportSystem.Api.Models.Data;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
@@ -34,7 +35,9 @@ namespace TransportSystem.Api.Models.SatisfactionDetermination
                 ? allQualityCoefficients.Skip(Math.Max(0, allQualityCoefficients.Count - 5)).Average()
                 : 0;
 
-            return (currentQualityCoefficient - averageQuality + 1)/2 + passenger.QualityCoefficient;
+            return (passenger.TransportType == TransportType.Bus)
+                ? (currentQualityCoefficient - averageQuality + 0)/2 + passenger.QualityCoefficient
+                : (currentQualityCoefficient - averageQuality + 1)/2 + passenger.QualityCoefficient;
         }
 
         private double GetReward(double previousQualityCoefficient, double currentQualityCoefficient)
