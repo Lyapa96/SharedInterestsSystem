@@ -7,7 +7,7 @@ using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.Deviation;
 
-namespace TransportSystem.Api.Tests
+namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
 {
     public class DeviationFuncSpec
     {

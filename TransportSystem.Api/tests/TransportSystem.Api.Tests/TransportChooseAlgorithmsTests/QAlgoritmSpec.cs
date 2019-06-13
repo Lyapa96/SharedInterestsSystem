@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
 
-namespace TransportSystem.Api.Tests
+namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
 {
     public class QAlgoritmSpec
     {
@@ -11,7 +11,7 @@ namespace TransportSystem.Api.Tests
         [TestCase(4, 5, 0.9, 9.4)]
         [TestCase(0, 0, 0, 0)]
         [TestCase(1, 1, 1, 3.1)]
-        public void Should_rigth_update_reward(double previousReward, double maxNextReward, double currentReward, double expectedValue)
+        public void Should_right_update_reward(double previousReward, double maxNextReward, double currentReward, double expectedValue)
         {
             var result = QLearningAlgoritm.GetUpdateReward(previousReward, maxNextReward, currentReward);
 

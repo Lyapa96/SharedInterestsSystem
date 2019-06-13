@@ -7,7 +7,7 @@ using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.Average;
 
-namespace TransportSystem.Api.Tests
+namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
 {
     [TestFixture]
     public class AveragingFuncSpec

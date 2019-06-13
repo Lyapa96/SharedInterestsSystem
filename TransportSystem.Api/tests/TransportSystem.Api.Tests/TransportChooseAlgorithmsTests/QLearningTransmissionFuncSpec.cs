@@ -7,7 +7,7 @@ using TransportSystem.Api.Models.TransportChooseAlgorithms;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
 
-namespace TransportSystem.Api.Tests
+namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
 {
     public class QLearningTransmissionFuncSpec
     {

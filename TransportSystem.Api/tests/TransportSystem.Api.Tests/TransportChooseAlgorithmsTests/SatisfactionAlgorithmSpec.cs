@@ -7,7 +7,7 @@ using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.SatisfactionDetermination;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 
-namespace TransportSystem.Api.Tests
+namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
 {
     public class SatisfactionAlgorithmSpec
     {

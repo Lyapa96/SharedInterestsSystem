@@ -2,7 +2,7 @@
 using System.Linq;
 using TransportSystem.Api.Models.Data;
 
-namespace TransportSystem.Api.Models.Neighbours
+namespace TransportSystem.Api.Models.Neighbors
 {
     public class NeighborsManager : INeighborsManager
     {
@@ -71,13 +71,13 @@ namespace TransportSystem.Api.Models.Neighbours
         private string[] GetNeighbors(int agentPosition, int columns, PassengerDto[] passengers)
         {
             var neighbors = new List<string>();
-            if (agentPosition - 1 > 0)
+            if (agentPosition - 1 >= 0 && (agentPosition) % columns != 0)
                 neighbors.Add(passengers[agentPosition - 1].Id);
 
-            if (agentPosition + 1 < passengers.Length)
+            if (agentPosition + 1 < passengers.Length && (agentPosition + 1)%columns != 0)
                 neighbors.Add(passengers[agentPosition + 1].Id);
 
-            if (agentPosition - columns > 0)
+            if (agentPosition - columns >= 0)
                 neighbors.Add(passengers[agentPosition - columns].Id);
 
             if (agentPosition + columns < passengers.Length)
