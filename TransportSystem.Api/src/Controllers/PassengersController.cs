@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TransportSystem.Api.Models.Data;
-using TransportSystem.Api.Models.Neighbours;
+using TransportSystem.Api.Models.Neighbors;
 using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.System;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;

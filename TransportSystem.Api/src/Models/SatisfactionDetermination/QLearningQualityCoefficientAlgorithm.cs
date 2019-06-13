@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net.Http;
 using TransportSystem.Api.Models.Data;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;

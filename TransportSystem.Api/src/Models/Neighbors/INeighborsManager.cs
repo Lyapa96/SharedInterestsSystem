@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TransportSystem.Api.Models.Data;
 
-namespace TransportSystem.Api.Models.Neighbours
+namespace TransportSystem.Api.Models.Neighbors
 {
     public interface INeighborsManager
     {

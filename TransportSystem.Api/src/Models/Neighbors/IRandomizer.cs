@@ -1,4 +1,4 @@
-﻿namespace TransportSystem.Api.Models.Neighbours
+﻿namespace TransportSystem.Api.Models.Neighbors
 {
     public interface IRandomizer
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TransportSystem.Api.Models.Neighbours
+namespace TransportSystem.Api.Models.Neighbors
 {
     public class DefaultRandomizer : IRandomizer
     {

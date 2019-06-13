@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TransportSystem.Api.Models.Data;
+using static System.Int32;
 
 namespace TransportSystem.Api.Models.System
 {
@@ -25,9 +26,9 @@ namespace TransportSystem.Api.Models.System
 
         private static double GetQualityCoefficientForBus(Passenger passenger)
         {
-            if (Int32.Parse(passenger.Id) <= 3)
+            if (Parse(passenger.Id) <= 3)
                 return 0.3;
-            if (Int32.Parse(passenger.Id) <= 6)
+            if (Parse(passenger.Id) <= 6)
                 return 0.4;
 
             return 0.5;

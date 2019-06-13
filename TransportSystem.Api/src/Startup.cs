@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
-using TransportSystem.Api.Models.Neighbours;
+using TransportSystem.Api.Models.Neighbors;
 using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.System;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
