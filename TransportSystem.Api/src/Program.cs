@@ -12,9 +12,11 @@ namespace TransportSystem.Api
                 .Run();
         }
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost
+        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return WebHost
                 .CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
+        }
     }
 }

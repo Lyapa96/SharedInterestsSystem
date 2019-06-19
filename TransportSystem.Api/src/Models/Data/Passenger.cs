@@ -114,7 +114,7 @@ namespace TransportSystem.Api.Models.Data
             return new PassengerDto
             {
                 Id = Id,
-                Neighbours = Neighbors.Select(y => y.Id).ToArray(),
+                Neighbours = Neighbors?.Select(y => y.Id).ToArray(),
                 Satisfaction = Satisfaction,
                 Quality = QualityCoefficient,
                 TransportType = TransportType,

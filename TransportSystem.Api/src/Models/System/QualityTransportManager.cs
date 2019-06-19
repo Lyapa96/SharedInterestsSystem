@@ -24,6 +24,19 @@ namespace TransportSystem.Api.Models.System
             }
         }
 
+        public static void ChangeQuality(Passenger[] passengers)
+        {
+            var carCount = passengers.Count(x => x.TransportType == TransportType.Car);
+            var passengersCount = passengers.Length;
+
+            foreach (var passenger in passengers)
+            {
+                passenger.QualityCoefficient = passenger.TransportType == TransportType.Car
+                    ? Math.Round(GetQualityCoefficientForCar(carCount, passengersCount, passenger), 2)
+                    : Math.Round(GetQualityCoefficientForBusInSmo(passenger), 2);
+            }
+        }
+
         private static double GetQualityCoefficientForBus(Passenger passenger)
         {
             if (Parse(passenger.Id) <= 3)
@@ -45,23 +58,10 @@ namespace TransportSystem.Api.Models.System
             return 0.1;
         }
 
-        public static void ChangeQuality(Passenger[] passengers)
-        {
-            var carCount = passengers.Count(x => x.TransportType == TransportType.Car);
-            var passengersCount = passengers.Length;
-
-            foreach (var passenger in passengers)
-            {
-                passenger.QualityCoefficient = passenger.TransportType == TransportType.Car
-                    ? Math.Round(GetQualityCoefficientForCar(carCount, passengersCount, passenger), 2)
-                    : Math.Round(GetQualityCoefficientForBusInSmo(passenger), 2);
-            }
-        }
-
         private static double GetQualityCoefficientForBusInSmo(Passenger passenger)
         {
-            return Math.Abs(passenger.FirstBusQuality) < 0.001 
-                ? 0.5 
+            return Math.Abs(passenger.FirstBusQuality) < 0.001
+                ? 0.5
                 : passenger.FirstBusQuality;
         }
     }

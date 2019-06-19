@@ -34,7 +34,7 @@ namespace TransportSystem.Api.Models.SatisfactionDetermination
                 ? allQualityCoefficients.Skip(Math.Max(0, allQualityCoefficients.Count - 5)).Average()
                 : 0;
 
-            return (passenger.TransportType == TransportType.Bus)
+            return passenger.TransportType == TransportType.Bus
                 ? (currentQualityCoefficient - averageQuality + 0)/2 + passenger.QualityCoefficient
                 : (currentQualityCoefficient - averageQuality + 1)/2 + passenger.QualityCoefficient;
         }

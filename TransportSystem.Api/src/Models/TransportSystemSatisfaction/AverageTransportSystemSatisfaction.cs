@@ -8,7 +8,7 @@ namespace TransportSystem.Api.Models.TransportSystemSatisfaction
     {
         public double Evaluate(PassengerDto[] allPassengers)
         {
-            return Math.Round(allPassengers.Sum(x => x.Satisfaction) / allPassengers.Length, 2);
+            return Math.Round(allPassengers.Sum(x => x.Satisfaction)/allPassengers.Length, 2);
         }
     }
 }

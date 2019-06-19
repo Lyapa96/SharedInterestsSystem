@@ -29,7 +29,10 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
         {
             var stringBuilder = new StringBuilder();
             foreach (var pair in neighborsTransportRelation.OrderBy(x => x.transportType))
+            {
                 stringBuilder.Append($"[{pair.transportType} : {pair.value}]");
+            }
+
             return currentTransoprt + stringBuilder.ToString();
         }
     }

@@ -7,6 +7,7 @@ namespace TransportSystem.Api.Models.Data
         public IterationResult()
         {
         }
+
         public IterationResult(PassengerDto[] passengers, double averageSatisfaction)
         {
             Passengers = passengers;

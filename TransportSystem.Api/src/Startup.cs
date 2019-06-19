@@ -9,6 +9,7 @@ using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.System;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage;
 using TransportSystem.Api.Models.TransportSystemSatisfaction;
+using TransportSystem.Api.Utilities;
 
 namespace TransportSystem.Api
 {
@@ -26,6 +27,7 @@ namespace TransportSystem.Api
             services.AddSingleton<ITransportSystem, Models.System.TransportSystem>();
             services.AddSingleton<IAgentStateStorage, MemoryStorage>();
             services.AddSingleton<IRandomizer, DefaultRandomizer>();
+            services.AddSingleton<IPassengersFactory, PassengersFactory>();
             services.AddSingleton<INeighborsManager, NeighborsManager>();
             services.AddSingleton<IPassengerBehaviourProvider, PassengerBehaviourProvider>();
             services.AddSingleton<ITransportSystemSatisfaction, AverageTransportSystemSatisfaction>();

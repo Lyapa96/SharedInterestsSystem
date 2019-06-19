@@ -28,16 +28,16 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.Average
                     });
 
             foreach (var info in typeTransportInfos)
+            {
                 if (info.Item2 > currentSatisfaction)
                 {
                     currentTransportType = info.Item1;
                     currentSatisfaction = info.Item2;
                 }
+            }
 
             if (currentTransportType == TransportType.Car)
-            {
                 currentTransportType = rnd.NextDouble() < carAvailabilityProbability ? TransportType.Car : TransportType.Bus;
-            }
 
             return currentTransportType;
         }

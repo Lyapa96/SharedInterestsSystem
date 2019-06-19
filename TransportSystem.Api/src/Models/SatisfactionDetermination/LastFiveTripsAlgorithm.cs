@@ -12,8 +12,8 @@ namespace TransportSystem.Api.Models.SatisfactionDetermination
             var qualityCoefficient = passenger.QualityCoefficient;
             var averageQuality = allQualityCoefficients.Count > 0
                 ? allQualityCoefficients.Skip(Math.Max(0, allQualityCoefficients.Count - 5)).Average()
-                : 0; 
-            return (qualityCoefficient - averageQuality + 1) / 2 + passenger.QualityCoefficient;
+                : 0;
+            return (qualityCoefficient - averageQuality + 1)/2 + passenger.QualityCoefficient;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
             };
 
             qLearningTransmissionFunc.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, DeviationStub);
-            
+
             storage.Received().GetBestNextTransport(Arg.Any<string>());
         }
     }

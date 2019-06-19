@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TransportSystem.Api.Models.Data;
 using TransportSystem.Api.Models.Neighbors;
-using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.System;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 using TransportSystem.Api.Models.TransportSystemSatisfaction;
@@ -14,19 +13,19 @@ namespace TransportSystem.Api.Controllers
     [ApiController]
     public class PassengersController : ControllerBase
     {
-        private readonly IPassengerBehaviourProvider passengerBehaviourProvider;
+        private readonly IPassengersFactory passengersFactory;
         private readonly INeighborsManager neighborsManager;
         private readonly ITransportSystemSatisfaction transportSystemSatisfaction;
         private readonly ITransportSystem transportSystem;
 
         public PassengersController(
             ITransportSystem transportSystem,
-            IPassengerBehaviourProvider passengerBehaviourProvider,
+            IPassengersFactory passengersFactory,
             INeighborsManager neighborsManager,
             ITransportSystemSatisfaction transportSystemSatisfaction)
         {
-            this.passengerBehaviourProvider = passengerBehaviourProvider;
             this.neighborsManager = neighborsManager;
+            this.passengersFactory = passengersFactory;
             this.transportSystemSatisfaction = transportSystemSatisfaction;
             this.transportSystem = transportSystem;
         }
@@ -34,7 +33,7 @@ namespace TransportSystem.Api.Controllers
         [HttpPost("init")]
         public IActionResult InitPassengers([FromBody] InitPassengerInfo initPassengerInfo)
         {
-            var allPassengers = PassengersHelper.CreatePassengers(initPassengerInfo.Columns, initPassengerInfo.Rows);
+            var allPassengers = passengersFactory.CreatePassengers(initPassengerInfo.Columns, initPassengerInfo.Rows);
             var neighborhood = neighborsManager.GetGeometricNeighborhood(allPassengers, initPassengerInfo.Columns);
             allPassengers.SetNeighborhood(neighborhood);
 
@@ -44,7 +43,6 @@ namespace TransportSystem.Api.Controllers
                 new IterationResult
                 {
                     AlgorithmType = initPassengerInfo.AlgorithmType,
-                    IterationStep = 0,
                     AverageSatisfaction = averageSatisfaction,
                     Passengers = allPassengers
                 });
@@ -53,7 +51,7 @@ namespace TransportSystem.Api.Controllers
         [HttpPost("initSmo")]
         public IActionResult InitPassengersFromSmo([FromBody] SmoData smoData)
         {
-            var allPassengers = PassengersHelper.GetAllPassengersTogether(smoData);
+            var allPassengers = passengersFactory.CreateAllPassengersTogether(smoData);
             var neighborhood = neighborsManager.GetEachPassengerNeighbors(smoData.NeighboursCount, smoData.Columns, allPassengers);
             allPassengers.SetNeighborhood(neighborhood);
 
@@ -71,13 +69,8 @@ namespace TransportSystem.Api.Controllers
         [HttpPost("nextStep")]
         public IActionResult GetNextStep([FromBody] IterationResult previousIterationResult)
         {
-            var idToPassenger = previousIterationResult.Passengers
-                .ToDictionary(
-                    x => x.Id,
-                    x => Passenger.Create(x, passengerBehaviourProvider, previousIterationResult.AlgorithmType));
-            var allPassengers = PassengersHelper
-                .CreatePassengers(previousIterationResult.Passengers, idToPassenger)
-                .ToArray();
+            var allPassengers = passengersFactory
+                .CreatePassengers(previousIterationResult.AlgorithmType, previousIterationResult.Passengers);
 
             transportSystem.MakeIteration(allPassengers);
 

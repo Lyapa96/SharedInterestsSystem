@@ -4,12 +4,12 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage
 {
     public class QFuncContext : DbContext
     {
-        public DbSet<QFuncInfo> QFuncInfos { get; set; }
-
         public QFuncContext()
         {
             Database.EnsureCreated();
         }
+
+        public DbSet<QFuncInfo> QFuncInfos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

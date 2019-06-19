@@ -13,7 +13,7 @@ namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
         [TestCase(1, 1, 1, 3.1)]
         public void Should_right_update_reward(double previousReward, double maxNextReward, double currentReward, double expectedValue)
         {
-            var result = QLearningAlgoritm.GetUpdateReward(previousReward, maxNextReward, currentReward);
+            var result = QLearningAlgorithm.GetUpdateReward(previousReward, maxNextReward, currentReward);
 
             result.Should().Be(expectedValue);
         }

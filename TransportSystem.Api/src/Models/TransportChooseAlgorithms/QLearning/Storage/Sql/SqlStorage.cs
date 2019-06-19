@@ -23,7 +23,7 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage
                 db.SaveChanges();
             }
 
-            return QLearningAlgoritm.GetBestNextTransportWithEpsilonMush(qFuncInfo);
+            return QLearningAlgorithm.GetBestNextTransportWithEpsilonMush(qFuncInfo);
         }
 
         public void SaveStateReward(
@@ -34,9 +34,7 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage
         {
             var previousQFunc = db.QFuncInfos.FirstOrDefault(x => x.State == previousAgentState);
             if (previousQFunc == null)
-            {
                 db.Add(StorageHelpers.CreateRandomQFuncInfo(previousAgentState));
-            }
             else
             {
                 var currenQFunc = db.QFuncInfos.FirstOrDefault(x => x.State == currentAgentState);
@@ -49,13 +47,9 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage
                 var maxNextReward = currenQFunc.GetBestReward();
 
                 if (previousAction == TransportType.Bus)
-                {
-                    previousQFunc.BusReward = QLearningAlgoritm.GetUpdateReward(previousQFunc.BusReward, maxNextReward, reward);
-                }
+                    previousQFunc.BusReward = QLearningAlgorithm.GetUpdateReward(previousQFunc.BusReward, maxNextReward, reward);
                 else
-                {
-                    previousQFunc.CarReward = QLearningAlgoritm.GetUpdateReward(previousQFunc.CarReward, maxNextReward, reward);
-                }
+                    previousQFunc.CarReward = QLearningAlgorithm.GetUpdateReward(previousQFunc.CarReward, maxNextReward, reward);
             }
 
             db.SaveChanges();

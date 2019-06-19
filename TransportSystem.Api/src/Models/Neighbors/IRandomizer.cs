@@ -3,5 +3,6 @@
     public interface IRandomizer
     {
         int GetRandomNumber(int min, int max);
+        double GetRandomDouble();
     }
 }
