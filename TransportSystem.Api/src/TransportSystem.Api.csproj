@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debag\netcoreapp2.1\TransportSystem.Api.xml</DocumentationFile>
-    <OutputPath>bin\Debag\netcoreapp2.1\</OutputPath>
-    <NoWarn>1701;1702; 1591</NoWarn>
+    <DocumentationFile>bin\Debug\netcoreapp2.1\TransportSystem.Api.xml</DocumentationFile>
+    <OutputPath>bin\Debug\netcoreapp2.1\</OutputPath>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
