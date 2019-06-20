@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
+using Swashbuckle.AspNetCore.Swagger;
 using TransportSystem.Api.Models.Neighbors;
 using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.System;
@@ -32,6 +36,14 @@ namespace TransportSystem.Api
             services.AddSingleton<IPassengerBehaviourProvider, PassengerBehaviourProvider>();
             services.AddSingleton<ITransportSystemSatisfaction, AverageTransportSystemSatisfaction>();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Transport system API", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
@@ -51,6 +63,15 @@ namespace TransportSystem.Api
                     .AllowAnyHeader()
                     .AllowCredentials());
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Transport system API V1");
+                c.RoutePrefix = string.Empty;
+            });
+
+
             app.UseMvc();
         }
     }

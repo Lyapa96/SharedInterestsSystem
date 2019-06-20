@@ -30,6 +30,9 @@ namespace TransportSystem.Api.Controllers
             this.transportSystem = transportSystem;
         }
 
+        /// <summary>
+        /// Initializes the iteration result for a simple system
+        /// </summary>
         [HttpPost("init")]
         public IActionResult InitPassengers([FromBody] InitPassengerInfo initPassengerInfo)
         {
@@ -48,6 +51,9 @@ namespace TransportSystem.Api.Controllers
                 });
         }
 
+        /// <summary>
+        /// Initializes the iteration result for output results form Queueing theory system
+        /// </summary>
         [HttpPost("initSmo")]
         public IActionResult InitPassengersFromSmo([FromBody] SmoData smoData)
         {
@@ -66,6 +72,9 @@ namespace TransportSystem.Api.Controllers
                 });
         }
 
+        /// <summary>
+        /// Emulates iteration of the transport system and returns iteration result
+        /// </summary>
         [HttpPost("nextStep")]
         public IActionResult GetNextStep([FromBody] IterationResult previousIterationResult)
         {
@@ -83,6 +92,9 @@ namespace TransportSystem.Api.Controllers
             return Ok(previousIterationResult.Next(passengerDtos, averageSatisfaction));
         }
 
+        /// <summary>
+        /// Health check method
+        /// </summary>
         [HttpGet("ping")]
         public ActionResult<string> Get()
         {

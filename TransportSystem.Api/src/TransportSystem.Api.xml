@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TransportSystem.Api</name>
+    </assembly>
+    <members>
+        <member name="M:TransportSystem.Api.Controllers.PassengersController.InitPassengers(TransportSystem.Api.Models.Data.InitPassengerInfo)">
+            <summary>
+            Initializes the iteration result for a simple system
+            </summary>
+        </member>
+        <member name="M:TransportSystem.Api.Controllers.PassengersController.InitPassengersFromSmo(TransportSystem.Api.Models.Data.SmoData)">
+            <summary>
+            Initializes the iteration result for output results form Queueing theory system
+            </summary>
+        </member>
+        <member name="M:TransportSystem.Api.Controllers.PassengersController.GetNextStep(TransportSystem.Api.Models.Data.IterationResult)">
+            <summary>
+            Emulates iteration of the transport system and returns iteration result
+            </summary>
+        </member>
+        <member name="M:TransportSystem.Api.Controllers.PassengersController.Get">
+            <summary>
+            Health check method
+            </summary>
+        </member>
+    </members>
+</doc>
