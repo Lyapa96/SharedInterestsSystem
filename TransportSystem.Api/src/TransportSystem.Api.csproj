@@ -5,6 +5,17 @@
     <UserSecretsId>34a22413-9e85-4a51-a59a-149f801801e5</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debag\netcoreapp2.1\TransportSystem.Api.xml</DocumentationFile>
+    <OutputPath>bin\Debag\netcoreapp2.1\</OutputPath>
+    <NoWarn>1701;1702; 1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp2.1\TransportSystem.Api.xml</DocumentationFile>
+    <OutputPath>bin\Release\netcoreapp2.1\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="wwwroot\**" />
     <Content Remove="wwwroot\**" />
