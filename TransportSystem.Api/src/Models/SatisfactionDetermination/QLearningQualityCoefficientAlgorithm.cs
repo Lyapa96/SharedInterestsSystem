@@ -34,9 +34,29 @@ namespace TransportSystem.Api.Models.SatisfactionDetermination
                 ? allQualityCoefficients.Skip(Math.Max(0, allQualityCoefficients.Count - 5)).Average()
                 : 0;
 
-            return passenger.TransportType == TransportType.Bus
-                ? (currentQualityCoefficient - averageQuality + 0)/2 + passenger.QualityCoefficient
-                : (currentQualityCoefficient - averageQuality + 1)/2 + passenger.QualityCoefficient;
+            return PassengerQualityCoefficient(passenger, currentQualityCoefficient, averageQuality);
+        }
+
+        private static double PassengerQualityCoefficient(
+            Passenger passenger, 
+            double currentQualityCoefficient,
+            double averageQuality)
+        {
+            switch (passenger.TransportType)
+            {
+                case TransportType.Car:
+                    return (currentQualityCoefficient - averageQuality + 1) / 2 + passenger.QualityCoefficient;
+                case TransportType.Bus:
+                    return (currentQualityCoefficient - averageQuality + 0) / 2 + passenger.QualityCoefficient;
+                case TransportType.Subway:
+                    return (currentQualityCoefficient - averageQuality + 0) / 2 + passenger.QualityCoefficient;
+                case TransportType.Bike:
+                    return (currentQualityCoefficient - averageQuality + 0) / 2 + passenger.QualityCoefficient;
+                case TransportType.Tram:
+                    return (currentQualityCoefficient - averageQuality + 0) / 2 + passenger.QualityCoefficient;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private double GetReward(double previousQualityCoefficient, double currentQualityCoefficient)
