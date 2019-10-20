@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.Neighbors;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage.Sql;
+using TransportSystem.Api.Utilities;
 
 namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
 {
@@ -11,36 +13,20 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
         private const double Lf = 1;
         private const double Df = 0.1;
         private const double Epsilon = 0.15;
-        private static readonly Random rnd = new Random();
+        private static readonly IRandomizer randomizer = new DefaultRandomizer();
 
         public static double GetUpdateReward(double previousReward, double maxNextReward, double currentReward)
         {
-            return previousReward + Lf*(currentReward + Df*maxNextReward + previousReward);
+            return previousReward + Lf * (currentReward + Df * maxNextReward + previousReward);
         }
 
         public static TransportType GetBestNextTransportWithEpsilonMush(QFuncInfo qFuncInfo)
         {
-            var bestTransportType = qFuncInfo.BusReward > qFuncInfo.CarReward ? TransportType.Bus : TransportType.Car;
-            return rnd.NextDouble() > Epsilon
+            var bestTransportType = qFuncInfo.GetBestTransportType();
+
+            return randomizer.GetRandomDouble() > Epsilon
                 ? bestTransportType
-                : GetOtherRandomTransportType(bestTransportType);
-        }
-
-        public static TransportType GetOtherRandomTransportType(TransportType transportType)
-        {
-            TransportType[] allTransportTypes = {TransportType.Car, TransportType.Bus};
-            var appropriateTransport = allTransportTypes
-                .Where(x => x != transportType)
-                .ToArray();
-            return GetRandomTransportType(appropriateTransport, rnd);
-        }
-
-        private static TransportType GetRandomTransportType(IReadOnlyList<TransportType> appropriateTransport, Random rnd)
-        {
-            if (appropriateTransport.Count == 1)
-                return appropriateTransport.First();
-
-            return rnd.NextDouble() < 0.5 ? TransportType.Bus : TransportType.Car;
+                : TransportTypes.GetRandomTransportWithoutType(bestTransportType, randomizer);
         }
     }
 }
