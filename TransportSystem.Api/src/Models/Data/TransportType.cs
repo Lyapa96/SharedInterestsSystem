@@ -2,7 +2,10 @@
 {
     public enum TransportType
     {
-        Car,
-        Bus
+        Car = 1,
+        Bus = 2,
+        Subway = 3,
+        Bike = 4,
+        Tram = 5
     }
 }
