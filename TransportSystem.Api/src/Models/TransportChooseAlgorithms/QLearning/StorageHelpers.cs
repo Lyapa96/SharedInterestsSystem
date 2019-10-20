@@ -46,12 +46,7 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
         public static QFuncInfo CreateRandomQFuncInfo(string state)
         {
             var rnd = new Random();
-            return new QFuncInfo
-            {
-                State = state,
-                BusReward = rnd.NextDouble(),
-                CarReward = rnd.NextDouble()
-            };
+            return new QFuncInfo(state, rnd);
         }
     }
 }
