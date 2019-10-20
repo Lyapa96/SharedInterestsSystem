@@ -46,10 +46,9 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage
 
                 var maxNextReward = currenQFunc.GetBestReward();
 
-                if (previousAction == TransportType.Bus)
-                    previousQFunc.BusReward = QLearningAlgorithm.GetUpdateReward(previousQFunc.BusReward, maxNextReward, reward);
-                else
-                    previousQFunc.CarReward = QLearningAlgorithm.GetUpdateReward(previousQFunc.CarReward, maxNextReward, reward);
+                var previousReward = previousQFunc.GetReward(previousAction);
+                var newReward = QLearningAlgorithm.GetUpdateReward(previousReward, maxNextReward, reward);
+                previousQFunc.SetReward(previousAction, newReward);
             }
 
             db.SaveChanges();
