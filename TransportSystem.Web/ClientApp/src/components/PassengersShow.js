@@ -1,12 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import './PassengersShow.css';
 
 class PassengersShow extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
     }
-    
+
     render() {
         let {passengers, columns} = this.props;
         let rows = [];
@@ -26,15 +26,24 @@ class PassengersShow extends React.Component {
                         <br/>
                         Quality of services: <strong>{passenger.quality}</strong>
                     </p>
-                    {(passenger.transportType === "Car")
-                        ? <img className="automobile" src="car.jpg" alt="car"/>
-                        : <img className="automobile" src="bus.png" alt="bus"/>}
+                    {this.getImageForType(passenger.transportType)}
                 </div>));
         }
         if (row.length !== 0)
             rows.push((<div className="passengersRow">{row}</div>));
 
         return (<div>{rows}</div>);
+    }
+
+    getImageForType(transportType) {
+        switch (transportType) {
+            case "Car":
+                return <img className="automobile" src="car.jpg" alt="car"/>;
+            case "Bus":
+                return <img className="automobile" src="bus.png" alt="bus"/>;
+        }
+
+        return null;
     }
 }
 

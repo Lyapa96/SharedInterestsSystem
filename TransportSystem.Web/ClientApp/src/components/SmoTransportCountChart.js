@@ -10,7 +10,7 @@ const plotOptions = {
     }
 };
 
-const App = ({carData, busData}) => (
+const App = ({carData, busData, subwayData, bikeData, tramData}) => (
     <div className="app">
         <HighchartsChart plotOptions={plotOptions}>
             <Chart />
@@ -27,6 +27,9 @@ const App = ({carData, busData}) => (
                 <YAxis.Title>Count passengers on transports</YAxis.Title>
                 <LineSeries name="Car" data={carData} />
                 <LineSeries name="Bus" data={busData} />
+                <LineSeries name="Subway" data={subwayData} />
+                <LineSeries name="Bike" data={bikeData} />
+                <LineSeries name="Tram" data={tramData} />
             </YAxis>
         </HighchartsChart>
     </div>
