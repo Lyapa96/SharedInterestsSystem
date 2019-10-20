@@ -22,7 +22,7 @@ namespace TransportSystem.Api.Utilities
         public PassengerDto[] CreatePassengers(int columns, int rows)
         {
             var passengers = new List<PassengerDto>();
-            var count = rows*columns;
+            var count = rows * columns;
             for (var i = 0; i < count; i++)
             {
                 var passenger = new PassengerDto
@@ -30,7 +30,7 @@ namespace TransportSystem.Api.Utilities
                     Id = $"{i + 1}",
                     Satisfaction = Math.Round(randomizer.GetRandomDouble(), 2),
                     Quality = Math.Round(randomizer.GetRandomDouble(), 2),
-                    TransportType = GetRandomTransportType(),
+                    TransportType = TransportTypes.GetRandomTransportTypeBetweenCarAndBus(randomizer),
                     FirstBusQuality = 0.5
                 };
                 passengers.Add(passenger);
@@ -54,18 +54,28 @@ namespace TransportSystem.Api.Utilities
                     })
                 .ToArray();
             var carPassengers = Enumerable.Range(0, smoData.PassengersOnCar)
-                .Select(
-                    x => new PassengerDto
-                    {
-                        Id = $"car.{x}",
-                        Quality = 1 - (double) smoData.PassengersOnCar/(smoData.PassengersOnCar + smoBusPassengers.Length),
-                        TransportType = TransportType.Car,
-                        Satisfaction = defaultSatisfaction,
-                        FirstBusQuality = 0
-                    });
+                .Select(x => CreateRandomPassengerDto(smoData, x, smoBusPassengers, defaultSatisfaction));
 
             var allPassengers = smoBusPassengers.Concat(carPassengers).ToArray();
             return allPassengers;
+        }
+
+        private PassengerDto CreateRandomPassengerDto(
+            SmoData smoData,
+            int x,
+            PassengerDto[] smoBusPassengers,
+            double defaultSatisfaction)
+        {
+            var type = TransportTypes.GetRandomTransportWithoutType(TransportType.Bus, randomizer);
+
+            return new PassengerDto
+            {
+                Id = $"{(int) type}.{x}",
+                Quality = 1 - (double) smoData.PassengersOnCar / (smoData.PassengersOnCar + smoBusPassengers.Length),
+                TransportType = type,
+                Satisfaction = defaultSatisfaction,
+                FirstBusQuality = 0
+            };
         }
 
         public Passenger[] CreatePassengers(ChoiceTransportAlgorithmType algorithmType, PassengerDto[] passengers)
@@ -89,11 +99,6 @@ namespace TransportSystem.Api.Utilities
             }
 
             return allPassengers.ToArray();
-        }
-
-        private TransportType GetRandomTransportType()
-        {
-            return randomizer.GetRandomDouble() < 0.5 ? TransportType.Bus : TransportType.Car;
         }
     }
 }
