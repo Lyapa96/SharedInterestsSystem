@@ -43,10 +43,10 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
             };
         }
 
-        public static QFuncInfo CreateRandomQFuncInfo(string state)
+        public static QFuncInfo CreateRandomQFuncInfo(string state, TransportType[] availableTransportTypes)
         {
             var rnd = new Random();
-            return new QFuncInfo(state, rnd);
+            return new QFuncInfo(state, rnd, availableTransportTypes);
         }
     }
 }

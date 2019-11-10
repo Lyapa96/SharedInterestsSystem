@@ -26,8 +26,8 @@ namespace TransportSystem.Api.Models.SatisfactionDetermination
                 reward = GetReward(previousQualityCoefficient, currentQualityCoefficient);
             }
 
-            var currentState = new AgentState(passenger.Neighbors, passenger.Satisfaction, passenger.TransportType).GetStringFormat();
-            stateStorage.SaveStateReward(passenger.PreviousState, currentState, reward, passenger.TransportType);
+            var currentState = new AgentState(passenger.Neighbors, passenger.Satisfaction, passenger.TransportType, passenger.AvailableTransportTypes).GetStringFormat();
+            stateStorage.SaveStateReward(passenger.PreviousState, currentState, reward, passenger.TransportType, passenger.AvailableTransportTypes);
 
             var allQualityCoefficients = passenger.AllQualityCoefficients;
             var averageQuality = allQualityCoefficients.Count > 0

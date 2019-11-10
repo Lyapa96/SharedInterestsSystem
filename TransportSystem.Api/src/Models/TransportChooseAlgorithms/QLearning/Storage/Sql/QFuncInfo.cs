@@ -9,11 +9,10 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage
 {
     public class QFuncInfo
     {
-        public QFuncInfo(string state, Random rnd)
+        public QFuncInfo(string state, Random rnd, TransportType[] availableTransportTypes)
         {
             State = state;
-            TransportTypesToRewards = TransportTypes
-                .AllTransportTypes
+            TransportTypesToRewards = availableTransportTypes
                 .Select(type => (type, rnd.NextDouble()))
                 .ToDictionary(x => x.type, x => x.Item2);
         }

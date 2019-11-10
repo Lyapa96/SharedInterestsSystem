@@ -7,13 +7,18 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
 {
     public class AgentState
     {
-        private readonly TransportType currentTransoprt;
+        private readonly TransportType currentTransport;
+        private readonly TransportType[] availableTransportTypes;
 
         private readonly List<(TransportType transportType, int value)> neighborsTransportRelation = new List<(TransportType transportType, int value)>();
 
-        public AgentState(HashSet<Passenger> neighbors, double currentSatisfaction, TransportType currentTransoprt)
+        public AgentState(HashSet<Passenger> neighbors,
+            double currentSatisfaction,
+            TransportType currentTransport, 
+            TransportType[] availableTransportTypes)
         {
-            this.currentTransoprt = currentTransoprt;
+            this.currentTransport = currentTransport;
+            this.availableTransportTypes = availableTransportTypes;
             foreach (var neighbor in neighbors)
             {
                 var difference = neighbor.Satisfaction - currentSatisfaction;
@@ -33,7 +38,7 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
                 stringBuilder.Append($"[{pair.transportType} : {pair.value}]");
             }
 
-            return currentTransoprt + stringBuilder.ToString();
+            return currentTransport + stringBuilder.ToString() + string.Join(",", availableTransportTypes);
         }
     }
 }

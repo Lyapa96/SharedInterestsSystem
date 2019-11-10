@@ -12,39 +12,40 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning.Storage
         {
             db = new QFuncContext();
         }
-
-        public TransportType GetBestNextTransport(string currentAgentState)
+            
+        public TransportType GetBestNextTransport(string currentAgentState, TransportType[] availableTransportTypes)
         {
             var qFuncInfo = db.QFuncInfos.FirstOrDefault(x => x.State == currentAgentState);
             if (qFuncInfo == null)
             {
-                qFuncInfo = StorageHelpers.CreateRandomQFuncInfo(currentAgentState);
+                qFuncInfo = StorageHelpers.CreateRandomQFuncInfo(currentAgentState, availableTransportTypes);
                 db.QFuncInfos.Add(qFuncInfo);
                 db.SaveChanges();
             }
 
-            return QLearningAlgorithm.GetBestNextTransportWithEpsilonMush(qFuncInfo);
+            return QLearningAlgorithm.GetBestNextTransportWithEpsilonMush(qFuncInfo, availableTransportTypes);
         }
 
         public void SaveStateReward(
             string previousAgentState,
             string currentAgentState,
             double reward,
-            TransportType previousAction)
+            TransportType previousAction,
+            TransportType[] availableTransportTypes)
         {
             var previousQFunc = db.QFuncInfos.FirstOrDefault(x => x.State == previousAgentState);
             if (previousQFunc == null)
-                db.Add(StorageHelpers.CreateRandomQFuncInfo(previousAgentState));
+                db.Add(StorageHelpers.CreateRandomQFuncInfo(previousAgentState, availableTransportTypes));
             else
             {
-                var currenQFunc = db.QFuncInfos.FirstOrDefault(x => x.State == currentAgentState);
-                if (currenQFunc == null)
+                var currentQFunc = db.QFuncInfos.FirstOrDefault(x => x.State == currentAgentState);
+                if (currentQFunc == null)
                 {
-                    currenQFunc = StorageHelpers.CreateRandomQFuncInfo(currentAgentState);
-                    db.Add(currenQFunc);
+                    currentQFunc = StorageHelpers.CreateRandomQFuncInfo(currentAgentState, availableTransportTypes);
+                    db.Add(currentQFunc);
                 }
 
-                var maxNextReward = currenQFunc.GetBestReward();
+                var maxNextReward = currentQFunc.GetBestReward();
 
                 var previousReward = previousQFunc.GetReward(previousAction);
                 var newReward = QLearningAlgorithm.GetUpdateReward(previousReward, maxNextReward, reward);

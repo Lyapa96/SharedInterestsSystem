@@ -5,10 +5,9 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms
 {
     public interface IChoiceTransportAlgorithm
     {
-        TransportType ChooseNextTransportType(
-            HashSet<Passenger> neighbors,
+        TransportType ChooseNextTransportType(HashSet<Passenger> neighbors,
             TransportType currentTransportType,
             double currentSatisfaction,
-            double deviationValue);
+            double deviationValue, TransportType[] availableTransportTypes);
     }
 }

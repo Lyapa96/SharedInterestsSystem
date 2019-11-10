@@ -79,18 +79,20 @@ namespace TransportSystem.Api.Models.Data
         public ChoiceTransportAlgorithmType ChoiceTransportAlgorithmType { get; set; }
         public double DeviationValue { get; set; }
         public string PreviousState { get; set; }
+        public TransportType[] AvailableTransportTypes { get; set; }
 
         public void AddNeighbor(Passenger neighbor)
         {
             Neighbors.Add(neighbor);
         }
 
-        public void ChooseNextTransportType()
+        public void ChooseNextTransportType(TransportType[] availableTransportTypes)
         {
-            PreviousState = new AgentState(Neighbors, Satisfaction, TransportType).GetStringFormat();
+            AvailableTransportTypes = availableTransportTypes;
+            PreviousState = new AgentState(Neighbors, Satisfaction, TransportType, availableTransportTypes).GetStringFormat();
             TransportType = PassengerBehaviourProvider
                 .GetChoiceTransportAlgorithm(ChoiceTransportAlgorithmType)
-                .ChooseNextTransportType(Neighbors, TransportType, Satisfaction, DeviationValue);
+                .ChooseNextTransportType(Neighbors, TransportType, Satisfaction, DeviationValue, availableTransportTypes);
         }
 
         public void UpdateSatisfaction()

@@ -18,6 +18,7 @@ namespace TransportSystem.Api.Models.Data
         public double AverageSatisfaction { get; set; }
         public int IterationStep { get; set; }
         public ChoiceTransportAlgorithmType AlgorithmType { get; set; }
+        public TransportType[] AvailableTransportTypes { get; set; }
 
         public IterationResult Next(PassengerDto[] passengers, double averageSatisfaction)
         {
@@ -26,7 +27,8 @@ namespace TransportSystem.Api.Models.Data
                 IterationStep = IterationStep + 1,
                 AlgorithmType = AlgorithmType,
                 AverageSatisfaction = averageSatisfaction,
-                Passengers = passengers
+                Passengers = passengers,
+                AvailableTransportTypes = AvailableTransportTypes
             };
         }
     }

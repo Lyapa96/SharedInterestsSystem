@@ -6,16 +6,17 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.Deviation
 {
     public class DeviationAlgorithm : IChoiceTransportAlgorithm
     {
-        public TransportType ChooseNextTransportType(
-            HashSet<Passenger> neighbors,
+        public TransportType ChooseNextTransportType(HashSet<Passenger> neighbors,
             TransportType currentTransportType,
             double currentSatisfaction,
-            double deviationValue)
+            double deviationValue, 
+            TransportType[] availableTransportTypes)
         {
             var neighborsSameTransport = neighbors.Where(x => x.TransportType == currentTransportType).ToArray();
             var averageSatisfactionSameTransport = !neighborsSameTransport.Any() ? 0 : neighborsSameTransport.Average(x => x.Satisfaction);
             if (averageSatisfactionSameTransport - currentSatisfaction > deviationValue)
-                return TransportType.Bus == currentTransportType ? TransportType.Car : TransportType.Bus;
+                return TransportType.Bus == currentTransportType 
+                    ? TransportType.Car : TransportType.Bus;
 
             var neighborsOtherTransport = neighbors.Where(x => x.TransportType != currentTransportType).ToArray();
             var averageSatisfactionOtherTransport = !neighborsOtherTransport.Any() ? 0 : neighborsOtherTransport.Average(x => x.Satisfaction);

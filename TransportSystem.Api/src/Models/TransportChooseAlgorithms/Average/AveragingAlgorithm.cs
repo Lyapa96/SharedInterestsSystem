@@ -2,30 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.Neighbors;
+using TransportSystem.Api.Utilities;
 
 namespace TransportSystem.Api.Models.TransportChooseAlgorithms.Average
 {
     public class AveragingAlgorithm : IChoiceTransportAlgorithm
     {
+        private readonly IRandomizer randomizer;
         private readonly double carAvailabilityProbability;
-        private readonly Random rnd;
 
-        public AveragingAlgorithm(double carAvailabilityProbability)
+        public AveragingAlgorithm(IRandomizer randomizer, double carAvailabilityProbability)
         {
-            rnd = new Random();
+            this.randomizer = randomizer;
             this.carAvailabilityProbability = carAvailabilityProbability;
         }
 
-        public TransportType ChooseNextTransportType(HashSet<Passenger> neighbors, TransportType currentTransportType, double currentSatisfaction, double deviationValue)
+        public TransportType ChooseNextTransportType(
+            HashSet<Passenger> neighbors, 
+            TransportType currentTransportType,
+            double currentSatisfaction, 
+            double deviationValue, 
+            TransportType[] availableTransportTypes)
         {
             var typeTransportInfos = neighbors
                 .GroupBy(x => x.TransportType)
-                .Select(
-                    type =>
-                    {
-                        var averageSatisfaction = type.Select(x => x.Satisfaction).Average();
-                        return Tuple.Create(type.Key, averageSatisfaction);
-                    });
+                .Select(GetTransportInfo);
 
             foreach (var info in typeTransportInfos)
             {
@@ -37,9 +39,17 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.Average
             }
 
             if (currentTransportType == TransportType.Car)
-                currentTransportType = rnd.NextDouble() < carAvailabilityProbability ? TransportType.Car : TransportType.Bus;
+                currentTransportType = randomizer.GetRandomDouble() < carAvailabilityProbability 
+                    ? TransportType.Car 
+                    : TransportTypes.GetRandomTransportWithoutType(TransportType.Car, randomizer, availableTransportTypes);
 
             return currentTransportType;
+        }
+
+        private static Tuple<TransportType, double> GetTransportInfo(IGrouping<TransportType, Passenger> type)
+        {
+            var averageSatisfaction = type.Select(x => x.Satisfaction).Average();
+            return Tuple.Create(type.Key, averageSatisfaction);
         }
     }
 }

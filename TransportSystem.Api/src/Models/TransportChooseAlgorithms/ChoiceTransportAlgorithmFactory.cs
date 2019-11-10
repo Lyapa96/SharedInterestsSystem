@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TransportSystem.Api.Models.Neighbors;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.Average;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.Deviation;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning;
@@ -8,6 +9,7 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms
 {
     public class ChoiceTransportAlgorithmFactory
     {
+        private IRandomizer randomizer = new DefaultRandomizer();
         private const double CarAvailabilityProbability = 85;
         private readonly Dictionary<ChoiceTransportAlgorithmType, IChoiceTransportAlgorithm> typeToFunc;
 
@@ -15,7 +17,7 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms
         {
             typeToFunc = new Dictionary<ChoiceTransportAlgorithmType, IChoiceTransportAlgorithm>
             {
-                {ChoiceTransportAlgorithmType.Average, new AveragingAlgorithm(CarAvailabilityProbability)},
+                {ChoiceTransportAlgorithmType.Average, new AveragingAlgorithm(randomizer, CarAvailabilityProbability)},
                 {ChoiceTransportAlgorithmType.Deviation, new DeviationAlgorithm()},
                 {ChoiceTransportAlgorithmType.QLearning, new QLearningChoiceTransportAlgorithm(stateStorage)}
             };

@@ -4,11 +4,11 @@ namespace TransportSystem.Api.Models.System
 {
     public class TransportSystem : ITransportSystem
     {
-        public void MakeIteration(Passenger[] passengers)
+        public void MakeIteration(Passenger[] passengers, TransportType[] availableTransportTypes)
         {
             foreach (var passenger in passengers)
             {
-                passenger.ChooseNextTransportType();
+                passenger.ChooseNextTransportType(availableTransportTypes);
             }
 
             QualityTransportManager.ChangeQuality(passengers);

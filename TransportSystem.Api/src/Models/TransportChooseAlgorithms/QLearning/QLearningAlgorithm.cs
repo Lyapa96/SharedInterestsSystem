@@ -20,13 +20,13 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
             return previousReward + Lf * (currentReward + Df * maxNextReward + previousReward);
         }
 
-        public static TransportType GetBestNextTransportWithEpsilonMush(QFuncInfo qFuncInfo)
+        public static TransportType GetBestNextTransportWithEpsilonMush(QFuncInfo qFuncInfo, TransportType[] availableTransportTypes)
         {
             var bestTransportType = qFuncInfo.GetBestTransportType();
 
             return randomizer.GetRandomDouble() > Epsilon
                 ? bestTransportType
-                : TransportTypes.GetRandomTransportWithoutType(bestTransportType, randomizer);
+                : TransportTypes.GetRandomTransportWithoutType(bestTransportType, randomizer, availableTransportTypes);
         }
     }
 }

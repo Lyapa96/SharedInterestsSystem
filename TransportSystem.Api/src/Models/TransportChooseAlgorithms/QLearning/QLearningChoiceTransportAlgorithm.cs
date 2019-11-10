@@ -13,14 +13,14 @@ namespace TransportSystem.Api.Models.TransportChooseAlgorithms.QLearning
             this.stateStorage = stateStorage;
         }
 
-        public TransportType ChooseNextTransportType(
-            HashSet<Passenger> neighbors,
+        public TransportType ChooseNextTransportType(HashSet<Passenger> neighbors,
             TransportType currentTransportType,
             double currentSatisfaction,
-            double deviationValue)
+            double deviationValue, 
+            TransportType[] availableTransportTypes)
         {
-            var currentAgentState = new AgentState(neighbors, currentSatisfaction, currentTransportType).GetStringFormat();
-            return stateStorage.GetBestNextTransport(currentAgentState);
+            var currentAgentState = new AgentState(neighbors, currentSatisfaction, currentTransportType, availableTransportTypes).GetStringFormat();
+            return stateStorage.GetBestNextTransport(currentAgentState, availableTransportTypes);
         }
     }
 }
