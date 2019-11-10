@@ -29,6 +29,11 @@ export default props => (
                         <Glyphicon glyph='stats'/> Queueing model
                     </NavItem>
                 </LinkContainer>
+                <LinkContainer to={'/transports'}>
+                    <NavItem>
+                        <Glyphicon glyph='globe'/> Many types of transport
+                    </NavItem>
+                </LinkContainer>
                 <LinkContainer to={'/info'}>
                     <NavItem>
                         <Glyphicon glyph='info-sign'/> Get info

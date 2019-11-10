@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Info from './components/Info';
 import Passengers from './components/Passengers';
 import Smo from './components/Smo'
+import Transports from './components/Transports'
 
 export default () => (
   <Layout>
@@ -12,5 +13,6 @@ export default () => (
     <Route path='/info' component={Info} />
     <Route path='/passengers' component={Passengers} />
     <Route path='/smo' component={Smo} />
+    <Route path='/transports' component={Transports} />
   </Layout>
 );

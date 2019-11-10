@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import * as Passengers from './Passengers';
 import * as Smo from './Smo.js';
+import * as Transports from './Transports';
 
 export default function configureStore(history, initialState) {
     const reducers = {
         passengers: Passengers.reducer,
-        smo: Smo.reducer
+        smo: Smo.reducer,
+        transports: Transports.reducer
     };
 
     const logger = store => next => action => {
