@@ -15,6 +15,7 @@ namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
         private IAgentStateStorage storage;
         private QLearningChoiceTransportAlgorithm qLearningTransmissionFunc;
         private IPassengerBehaviourProvider passengerBehaviour;
+        private readonly TransportType[] availableTransportTypes = {TransportType.Bus, TransportType.Car};
 
         [SetUp]
         public void SetUp()
@@ -38,9 +39,9 @@ namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
                 TestHelpers.CreatePassenger(passengerBehaviour, 3, transmissionType, TransportType.Car, neighborsSatisfaction)
             };
 
-            qLearningTransmissionFunc.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, DeviationStub);
+            qLearningTransmissionFunc.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, DeviationStub, availableTransportTypes);
 
-            storage.Received().GetBestNextTransport(Arg.Any<string>());
+            storage.Received().GetBestNextTransport(Arg.Any<string>(), availableTransportTypes);
         }
     }
 }

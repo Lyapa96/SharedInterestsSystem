@@ -3,6 +3,7 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using TransportSystem.Api.Models.Data;
+using TransportSystem.Api.Models.Neighbors;
 using TransportSystem.Api.Models.PassengerBehaviour;
 using TransportSystem.Api.Models.TransportChooseAlgorithms;
 using TransportSystem.Api.Models.TransportChooseAlgorithms.Average;
@@ -16,6 +17,7 @@ namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
         private AveragingAlgorithm averagingAlgorithm;
         private IPassengerBehaviourProvider passengerBehaviour;
         private ChoiceTransportAlgorithmType transmissionType;
+        private readonly TransportType[] availableTransportTypes = { TransportType.Bus, TransportType.Car };
 
         [SetUp]
         public void SetUp()
@@ -23,7 +25,8 @@ namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
             const int carAvailabilityProbability = 1;
             passengerBehaviour = Substitute.For<IPassengerBehaviourProvider>();
             transmissionType = ChoiceTransportAlgorithmType.Average;
-            averagingAlgorithm = new AveragingAlgorithm(carAvailabilityProbability);
+            var defaultRandomizer = new DefaultRandomizer();
+            averagingAlgorithm = new AveragingAlgorithm(defaultRandomizer, carAvailabilityProbability);
         }
 
         [TestCase(TransportType.Bus)]
@@ -40,7 +43,7 @@ namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
             };
             const TransportType expectedTransportType = TransportType.Car;
 
-            var transportType = averagingAlgorithm.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, DeviationStub);
+            var transportType = averagingAlgorithm.ChooseNextTransportType(neighbors, currentTransportType, currentSatisfaction, DeviationStub, availableTransportTypes);
 
             transportType.Should().Be(expectedTransportType);
         }
@@ -57,7 +60,7 @@ namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
             };
             const TransportType expectedTransportType = TransportType.Bus;
 
-            var transportType = averagingAlgorithm.ChooseNextTransportType(neighbors, TransportType.Car, currentSatisfaction, DeviationStub);
+            var transportType = averagingAlgorithm.ChooseNextTransportType(neighbors, TransportType.Car, currentSatisfaction, DeviationStub, availableTransportTypes);
 
             transportType.Should().Be(expectedTransportType);
         }
@@ -75,7 +78,7 @@ namespace TransportSystem.Api.Tests.TransportChooseAlgorithmsTests
             };
             const TransportType expectedTransportType = TransportType.Car;
 
-            var transportType = averagingAlgorithm.ChooseNextTransportType(neighbors, TransportType.Car, currentSatisfaction, DeviationStub);
+            var transportType = averagingAlgorithm.ChooseNextTransportType(neighbors, TransportType.Car, currentSatisfaction, DeviationStub, availableTransportTypes);
 
             transportType.Should().Be(expectedTransportType);
         }

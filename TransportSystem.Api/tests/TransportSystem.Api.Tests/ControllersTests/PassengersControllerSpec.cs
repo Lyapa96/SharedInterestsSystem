@@ -37,7 +37,8 @@ namespace TransportSystem.Api.Tests.ControllersTests
                 passengersFactory.CreatePassengers(Arg.Any<int>(), Arg.Any<int>())
                     .Returns(new PassengerDto[0]);
 
-                controller = new PassengersController(transportSystem, passengersFactory, neighborsManager, transportSystemSatisfaction);
+                controller = new PassengersController(transportSystem, passengersFactory, neighborsManager,
+                    transportSystemSatisfaction);
             }
 
             [Test]
@@ -142,6 +143,7 @@ namespace TransportSystem.Api.Tests.ControllersTests
             private IPassengersFactory passengersFactory;
 
             private PassengersController controller;
+            private TransportType[] AvailableTransportTypes = {TransportType.Bus, TransportType.Car};
 
             [SetUp]
             public void SetUp()
@@ -153,7 +155,8 @@ namespace TransportSystem.Api.Tests.ControllersTests
                 passengersFactory.CreatePassengers(Arg.Any<int>(), Arg.Any<int>())
                     .Returns(new PassengerDto[0]);
 
-                controller = new PassengersController(transportSystem, passengersFactory, neighborsManager, transportSystemSatisfaction);
+                controller = new PassengersController(transportSystem, passengersFactory, neighborsManager,
+                    transportSystemSatisfaction);
             }
 
             [Test]
@@ -188,12 +191,12 @@ namespace TransportSystem.Api.Tests.ControllersTests
                     Columns = 2,
                     NeighboursCount = 3,
                     PassengersOnCar = 3,
-                    SmoPassengers = new SmoPassenger[3]
+                    SmoPassengers = new SmoPassenger[3],
                 };
 
                 var _ = controller.InitPassengersFromSmo(smoData);
 
-                passengersFactory.Received().CreateAllPassengersTogether(smoData);
+                passengersFactory.Received().CreateAllPassengersTogether(smoData, Arg.Any<TransportType[]>());
             }
 
             [Test]
@@ -216,7 +219,7 @@ namespace TransportSystem.Api.Tests.ControllersTests
                     .ToArray();
                 var defaultNeighbors = new List<string> {"some neighbor id"};
                 var neighborhood = Enumerable.Range(0, 4).ToDictionary(x => x.ToString(), x => defaultNeighbors);
-                passengersFactory.CreateAllPassengersTogether(smoData)
+                passengersFactory.CreateAllPassengersTogether(smoData, Arg.Any<TransportType[]>())
                     .Returns(passengers);
                 neighborsManager.GetEachPassengerNeighbors(smoData.NeighboursCount, smoData.Columns, passengers)
                     .Returns(neighborhood);
@@ -226,7 +229,7 @@ namespace TransportSystem.Api.Tests.ControllersTests
                         x => new PassengerDto
                         {
                             Id = x.ToString(),
-                            Neighbours = defaultNeighbors.ToArray()
+                            Neighbours = defaultNeighbors.ToArray(),
                         })
                     .ToArray();
 
@@ -260,7 +263,7 @@ namespace TransportSystem.Api.Tests.ControllersTests
             private INeighborsManager neighborsManager;
             private ITransportSystemSatisfaction transportSystemSatisfaction;
             private IPassengersFactory passengersFactory;
-
+            private TransportType[] AvailableTransportTypes = {TransportType.Bus, TransportType.Car};
             private PassengersController controller;
 
             [SetUp]
@@ -273,7 +276,8 @@ namespace TransportSystem.Api.Tests.ControllersTests
                 passengersFactory.CreatePassengers(Arg.Any<ChoiceTransportAlgorithmType>(), Arg.Any<PassengerDto[]>())
                     .Returns(new Passenger[0]);
 
-                controller = new PassengersController(transportSystem, passengersFactory, neighborsManager, transportSystemSatisfaction);
+                controller = new PassengersController(transportSystem, passengersFactory, neighborsManager,
+                    transportSystemSatisfaction);
             }
 
             [Test]
@@ -327,7 +331,8 @@ namespace TransportSystem.Api.Tests.ControllersTests
                     AlgorithmType = ChoiceTransportAlgorithmType.Deviation,
                     IterationStep = 1,
                     AverageSatisfaction = 1,
-                    Passengers = new PassengerDto[0]
+                    Passengers = new PassengerDto[0],
+                    AvailableTransportTypes = AvailableTransportTypes
                 };
                 var allPassengers = new Passenger[0];
                 passengersFactory.CreatePassengers(prevIterationResult.AlgorithmType, prevIterationResult.Passengers)
@@ -335,7 +340,7 @@ namespace TransportSystem.Api.Tests.ControllersTests
 
                 var _ = controller.GetNextStep(prevIterationResult);
 
-                transportSystem.Received().MakeIteration(allPassengers);
+                transportSystem.Received().MakeIteration(allPassengers, AvailableTransportTypes);
             }
         }
     }
