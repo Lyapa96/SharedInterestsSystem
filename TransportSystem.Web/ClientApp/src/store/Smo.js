@@ -4,6 +4,7 @@ const setInitStateType = 'SET_SMO_INIT_STATE';
 const getDataFromSockets = 'GET_DATA_FROM_SOCKETS';
 const setSmoInteractiveMode = "SET_SMO_INTERACTIVE_MODE";
 const runNextStepForSMO = "RUN_NEXT_STEP_FOR_SMO";
+const runNextOneHundredStepsForSMO = "RUN_NEXT_ONE_HUNDRED_STEPs_FOR_SMO";
 
 const initialState = {
     isInitState: true,
@@ -50,6 +51,21 @@ export const actionCreators = {
         });
         const nextStep = await response.json();
         dispatch({type: runNextStepForSMO, payload: nextStep});
+    },
+    runNextOneHundredStepsSmo: () => async (dispatch, getState) => {
+        let transportsState = getState().smo;
+        let currentStep = transportsState.smoSteps[transportsState.smoSteps.length - 1];
+        let method = 'nextSteps';
+        const response = await fetch(url + method, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(currentStep)
+        });
+        const nextStep = await response.json();
+        dispatch({type: runNextOneHundredStepsForSMO, payload: nextStep});
     }
 };
 
@@ -290,6 +306,19 @@ export const reducer = (state, action) => {
             smoSteps: [...state.smoSteps, action.payload]
         }
     }
+    
+    if (action.type === runNextOneHundredStepsForSMO)
+    {
+         let newSmoSteps = [
+             ...state.smoSteps,
+         ];
+        newSmoSteps = newSmoSteps.concat(action.payload);
+        return {
+            ...state,
+            smoSteps: newSmoSteps
+        }
+    }
+    
 
     return state;
 };

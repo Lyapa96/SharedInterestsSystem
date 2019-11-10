@@ -130,6 +130,9 @@ class Smo extends React.Component {
 
         let runButton = (
             <button className="btn btn-success" onClick={() => this.props.runNextStep()}>Run next step</button>);
+        let runOneHundredStepsButton = (
+            <button className="btn btn-success" onClick={() => this.props.runNextOneHundredStepsSmo()}>Run
+                100 steps</button>);
         let downloadResultButton = (
             <button className="btn btn-primary" href="#" onClick={() => {
                 console.log("download csv");
@@ -144,6 +147,9 @@ class Smo extends React.Component {
                 <div style={{display: "inline-block", "margin-right": "10px"}}>
                     {runButton}
                 </div>
+                <div style={{display: "inline-block", "margin-right": "10px"}}>
+                    {runOneHundredStepsButton}
+                </div>
                 {downloadResultButton}
             </div>) : <div/>;
 
@@ -154,31 +160,19 @@ class Smo extends React.Component {
 
         let carData = this.props.smoSteps.map(x => x.passengers.filter(p => p.transportType === 'Car').length);
         let busData = this.props.smoSteps.map(x => x.passengers.filter(p => p.transportType === 'Bus').length);
-        let subwayData = this.props.smoSteps.map(x => x.passengers.filter(p => p.transportType === 'Subway').length);
-        let bikeData = this.props.smoSteps.map(x => x.passengers.filter(p => p.transportType === 'Bike').length);
-        let tramData = this.props.smoSteps.map(x => x.passengers.filter(p => p.transportType === 'Tram').length);
         let countChart = ((!this.props.isInitState && this.props.smoSteps.length !== 0))
             ? <SmoTransportCountChart 
                 carData={carData} 
-                busData={busData} 
-                subwayData={subwayData}
-                bikeData={bikeData}
-                tramData={tramData}
+                busData={busData}
             />
             : <div/>;
 
         let catQualityData = this.props.smoSteps.map(x => this.getAverageQualityByType(x.passengers, 'Car'));
         let busQualityData = this.props.smoSteps.map(x => this.getAverageQualityByType(x.passengers, 'Bus'));
-        let subwayQualityData = this.props.smoSteps.map(x => this.getAverageQualityByType(x.passengers, 'Subway'));
-        let bikeQualityData = this.props.smoSteps.map(x => this.getAverageQualityByType(x.passengers, 'Bike'));
-        let tramQualityData = this.props.smoSteps.map(x => this.getAverageQualityByType(x.passengers, 'Tram'));
         let qualityChar = ((!this.props.isInitState && this.props.smoSteps.length !== 0))
             ? <SmoTransportQualityChart 
                 carQualityData={catQualityData} 
-                busQualityData={busQualityData} 
-                subwayQualityData={subwayQualityData}
-                bikeQualityData={bikeQualityData}
-                tramQualityData={tramQualityData}
+                busQualityData={busQualityData}
             />
             : <div/>;
 
